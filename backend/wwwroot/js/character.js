@@ -70,14 +70,17 @@ class AlexCharacter {
 
     setDirection(direction) {
         if (!(direction in this.directionRows)) return;
+        if (this.direction === direction) return;
 
         this.direction = direction;
         this.sequenceIndex = 0;
+        this.lastFrameTime = 0;
         this.render();
     }
 
     setState(state) {
         if (!(state in this.animations)) return;
+        if (this.state === state) return;
 
         this.state = state;
         this.sequenceIndex = 0;
