@@ -60,3 +60,8 @@
     background-size: 816px 544px;
     transform: none;
 }
+
+/* Compensação do alinhamento visual da spritesheet */
+.character-panel .alex-sprite {
+    transform: translateX(-10px);
+}
