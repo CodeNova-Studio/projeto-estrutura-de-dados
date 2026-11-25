@@ -65,3 +65,8 @@
 .character-panel .alex-sprite {
     transform: translateX(-10px);
 }
+
+/* Mantém o aviso de carregamento centralizado */
+.character-panel .alex-sprite-placeholder {
+    transform: translateX(10px);
+}
