@@ -104,10 +104,10 @@ class AlexCharacter {
             `url("${this.sheetPath}")`;
 
         this.element.style.backgroundRepeat = "no-repeat";
-        this.element.style.backgroundSize = "768px 512px";
+        this.element.style.backgroundSize = "816px 544px";
 
         this.element.style.backgroundPosition =
-            `-${column * 128}px -${row * 128}px`;
+            `-${column * 136}px -${row * 136}px`;
     }
 
     animate(timestamp) {

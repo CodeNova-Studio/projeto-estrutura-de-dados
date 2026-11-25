@@ -44,3 +44,19 @@
 .alex-sprite-placeholder[hidden] {
     display: none;
 }
+
+
+/* Ajuste de tamanho e centralização do sprite */
+.character-panel .alex-stage {
+    width: 136px;
+    min-width: 136px;
+    height: 160px;
+}
+
+.character-panel .alex-sprite {
+    width: 136px;
+    height: 136px;
+    flex: 0 0 136px;
+    background-size: 816px 544px;
+    transform: none;
+}
