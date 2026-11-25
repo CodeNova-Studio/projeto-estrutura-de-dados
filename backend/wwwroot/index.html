@@ -1,0 +1,385 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#100D1B">
+    <title>Escape Protocol // Orion System</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/character.css">
+</head>
+
+<body>
+<div class="game-container">
+
+    <!-- EFEITOS DE ATMOSFERA -->
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+    <div class="scanlines"></div>
+
+    <!-- CABEÇALHO -->
+    <header class="topbar">
+        <div class="brand">
+            <div class="brand-symbol">
+                <span>✦</span>
+            </div>
+
+            <div class="brand-info">
+                <span class="system-label">ORION RESEARCH FACILITY</span>
+                <h1>ESCAPE PROTOCOL</h1>
+                <span class="brand-subtitle">
+                    COMPLEXO ORION <span>//</span> SETOR SUBTERRÂNEO 01
+                </span>
+            </div>
+        </div>
+
+        <div class="header-center">
+            <span class="system-label">STATUS DA INSTALAÇÃO</span>
+            <div class="mission-status">
+                <span class="status-indicator"></span>
+                SISTEMA EM EMERGÊNCIA
+            </div>
+        </div>
+
+        <div class="header-data">
+            <span class="system-label">TERMINAL</span>
+            <strong>OR-01 / 077</strong>
+            <small>ACESSO RESTRITO</small>
+        </div>
+    </header>
+
+    <!-- BARRA DE INFORMAÇÕES -->
+    <div class="system-bar">
+        <div>
+            <span class="system-dot"></span>
+            CONEXÃO ESTABELECIDA
+        </div>
+
+        <div>PROTOCOLO: <strong>EMERGENCY-001</strong></div>
+        <div>LOCALIZAÇÃO: <strong>SUBNÍVEL 01</strong></div>
+        <div class="system-warning">ANOMALIA DETECTADA</div>
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <main class="dashboard">
+
+        <!-- COLUNA ESQUERDA -->
+        <aside class="left-column">
+
+            <section class="panel objectives-panel">
+                <div class="panel-topline">
+                    <span class="panel-index">01 / MISSION DATA</span>
+                    <span class="panel-decoration">✳</span>
+                </div>
+
+                <span class="eyebrow">MISSÃO 001 // PRIORIDADE ALTA</span>
+
+                <h2>Protocolo de Emergência</h2>
+
+                <p class="description">
+                    Encontre uma saída. Descubra o que aconteceu no complexo.
+                </p>
+
+                <div class="mission-code">
+                    <span>ARQUIVO</span>
+                    <strong>ORION-EMG-001</strong>
+                </div>
+
+                <div class="separator"></div>
+
+                <div class="section-heading">
+                    <h3>OBJETIVOS DA MISSÃO</h3>
+                    <span>02 REQUISITOS</span>
+                </div>
+
+                <div class="objective" id="card-objective">
+                    <span class="objective-icon">◇</span>
+                    <div class="objective-info">
+                        <strong>Cartão de acesso</strong>
+                        <small>DEPÓSITO // R05</small>
+                    </div>
+                    <span class="objective-state">PENDENTE</span>
+                </div>
+
+                <div class="objective" id="power-objective">
+                    <span class="objective-icon">ϟ</span>
+                    <div class="objective-info">
+                        <strong>Restaurar energia</strong>
+                        <small>ENERGIA // R07</small>
+                    </div>
+                    <span class="objective-state">PENDENTE</span>
+                </div>
+
+                <div class="objective-actions">
+                    <button id="collect-card-button" class="action-button">
+                        <span>◇</span> COLETAR CARTÃO
+                    </button>
+
+                    <button id="restore-power-button" class="action-button">
+                        <span>ϟ</span> RESTAURAR ENERGIA
+                    </button>
+                </div>
+
+                <div class="separator"></div>
+
+                <div class="section-heading">
+                    <h3>INVENTÁRIO</h3>
+                    <span>LOCAL STORAGE</span>
+                </div>
+
+                <div class="inventory-item">
+                    <span class="inventory-icon">▣</span>
+                    <div>
+                        <strong>Cartão de acesso</strong>
+                        <small id="card-status">Não encontrado</small>
+                    </div>
+                    <span class="inventory-indicator"></span>
+                </div>
+
+                <div class="inventory-item">
+                    <span class="inventory-icon">ϟ</span>
+                    <div>
+                        <strong>Energia principal</strong>
+                        <small id="power-status">Desligada</small>
+                    </div>
+                    <span class="inventory-indicator"></span>
+                </div>
+
+                <div class="panel-footer">
+                    <span>ORION SYSTEM</span>
+                    <span>DATA CLASSIFICATION: RESTRICTED</span>
+                </div>
+            </section>
+
+        </aside>
+
+        <!-- COLUNA CENTRAL -->
+        <section class="panel map-panel">
+
+            <div class="panel-topline">
+                <span class="panel-index">02 / ENVIRONMENT SCAN</span>
+                <span class="panel-decoration">◈</span>
+            </div>
+
+            <div class="panel-heading">
+                <div>
+                    <span class="eyebrow">NAVEGAÇÃO // SETOR SUBTERRÂNEO</span>
+                    <h2>Mapa da instalação</h2>
+                </div>
+
+                <span class="map-counter" id="room-counter">
+                    0 / 12 SALAS
+                </span>
+            </div>
+
+            <div class="map-toolbar">
+                <div class="map-toolbar-item">
+                    <span>MAPA</span>
+                    <strong>ORION-01</strong>
+                </div>
+
+                <div class="map-toolbar-item">
+                    <span>ESTRUTURA</span>
+                    <strong>12 NÓS</strong>
+                </div>
+
+                <div class="map-toolbar-item">
+                    <span>VARREDURA</span>
+                    <strong class="scan-status">AGUARDANDO</strong>
+                </div>
+            </div>
+
+            <div class="map-frame">
+                <div class="map-frame-label map-label-top">
+                    <span>◈ GRID MONITOR</span>
+                    <span>ORION FACILITY / 001</span>
+                </div>
+
+                <div id="room-map" class="room-map">
+                    <div class="map-placeholder">
+                        <span>✦</span>
+                        <p>Aguardando inicialização do mapa...</p>
+                    </div>
+                </div>
+
+                <div class="map-frame-label map-label-bottom">
+                    <span>COORDENADAS: RESTRITAS</span>
+                    <span>SCAN MODE: DFS</span>
+                </div>
+            </div>
+
+            <div class="map-legend">
+                <span>
+                    <i class="legend-dot visited"></i>
+                    Visitada
+                </span>
+
+                <span>
+                    <i class="legend-dot unvisited"></i>
+                    Não explorada
+                </span>
+
+                <span>
+                    <i class="legend-dot blocked"></i>
+                    Bloqueada
+                </span>
+            </div>
+
+            <button id="explore-button" class="primary-button">
+                <span class="button-icon">✦</span>
+                INICIAR EXPLORAÇÃO DFS
+                <span class="button-arrow">→</span>
+            </button>
+
+            <div class="map-footer">
+                <span>ATENÇÃO: ÁREAS NÃO MAPEADAS PODEM CONTER RISCOS.</span>
+                <span>ORION // NAVIGATION SYSTEM</span>
+            </div>
+
+        </section>
+
+        <!-- COLUNA DIREITA -->
+        <aside class="right-column">
+
+            <!-- PERSONAGEM -->
+            <section class="panel character-panel">
+                <div class="panel-topline">
+                    <span class="panel-index">05 / PERSONNEL FILE</span>
+                    <span class="panel-decoration">◉</span>
+                </div>
+
+                <span class="eyebrow">TRANSMISSÃO LOCAL // IDENTIFICAÇÃO</span>
+
+                <div class="character-profile">
+                    <div class="alex-stage">
+                        <div
+                            id="alex-sprite"
+                            class="alex-sprite"
+                            role="img"
+                            aria-label="Alex, personagem principal"
+                        >
+                            <span class="alex-sprite-placeholder">
+                                ALEX<br>
+                                SPRITE EM PREPARAÇÃO
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="character-data">
+                        <span>INVESTIGADORA</span>
+                        <h3>ALEX</h3>
+                        <small>ID: OR-077-A</small>
+
+                        <span class="character-status">
+                            <i></i> SINAL DETECTADO
+                        </span>
+                    </div>
+                </div>
+
+                <div class="character-message">
+                    <span>TRANSMISSÃO RECEBIDA</span>
+                    <p>
+                        "Preciso encontrar uma saída...
+                        antes que seja tarde demais."
+                    </p>
+                </div>
+
+                <div class="alex-animation-status" id="alex-animation-status">
+                    ESTADO: AGUARDANDO SPRITE
+                </div>
+            </section>
+
+            <!-- REGISTRO DE EVENTOS -->
+            <section class="panel log-panel">
+                <div class="panel-topline">
+                    <span class="panel-index">03 / SYSTEM LOG</span>
+                    <span class="panel-decoration">⌁</span>
+                </div>
+
+                <div class="panel-heading">
+                    <div>
+                        <span class="eyebrow">MONITORAMENTO</span>
+                        <h2>Registro de eventos</h2>
+                    </div>
+
+                    <span class="live-indicator">
+                        <span></span> LIVE
+                    </span>
+                </div>
+
+                <div class="terminal-header">
+                    <span>TERMINAL://ORION</span>
+                    <span>OUTPUT.LOG</span>
+                </div>
+
+                <div id="event-log" class="event-log">
+                    <p class="log-entry">
+                        <span>[SYSTEM]</span>
+                        Aguardando início da exploração...
+                    </p>
+                </div>
+
+                <div class="terminal-footer">
+                    <span class="terminal-cursor">▋</span>
+                    <span>MONITORAMENTO ATIVO</span>
+                </div>
+            </section>
+
+            <!-- PILHA DE RECURSÃO -->
+            <section class="panel stack-panel">
+                <div class="panel-topline">
+                    <span class="panel-index">04 / MEMORY TRACE</span>
+                    <span class="panel-decoration">⌘</span>
+                </div>
+
+                <div class="panel-heading">
+                    <div>
+                        <span class="eyebrow">ALGORITMO DFS</span>
+                        <h2>Pilha de recursão</h2>
+                    </div>
+
+                    <span class="map-counter" id="stack-counter">
+                        0 NÍVEIS
+                    </span>
+                </div>
+
+                <div class="stack-description">
+                    MEMÓRIA DE EXECUÇÃO
+                    <span>LAST IN / FIRST OUT</span>
+                </div>
+
+                <div id="recursion-stack" class="recursion-stack">
+                    <p class="stack-empty">
+                        Aguardando execução da DFS...
+                    </p>
+                </div>
+
+                <div class="stack-footer">
+                    <span>RECURSION TRACE</span>
+                    <span>ORION-DFS</span>
+                </div>
+            </section>
+
+        </aside>
+
+    </main>
+
+    <!-- RODAPÉ -->
+    <footer>
+        <div>
+            <span class="footer-symbol">✦</span>
+            ESCAPE PROTOCOL
+        </div>
+
+        <span>BUILD 001</span>
+        <span>COMPLEXO ORION</span>
+        <span class="footer-warning">CONEXÃO INSTÁVEL</span>
+    </footer>
+
+</div>
+
+<script src="js/game.js"></script>
+<script src="js/character.js"></script>
+</body>
+</html>

@@ -1,0 +1,3828 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap');
+
+:root {
+    --bg: #0b0913;
+    --bg-deep: #08070e;
+    --panel: #171324;
+    --panel-light: #211a32;
+    --panel-hover: #2a2040;
+
+    --purple: #9873d4;
+    --purple-dark: #61458d;
+    --pink: #d65a91;
+    --cyan: #75dce2;
+    --green: #91d9c0;
+
+    --text: #eee6f5;
+    --muted: #a99bb9;
+    --border: #453456;
+    --border-light: #755a91;
+
+    --font-main: 'Rajdhani', sans-serif;
+    --font-tech: 'Share Tech Mono', monospace;
+}
+
+/* =====================================
+   RESET E FUNDO
+===================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    padding: 22px;
+
+    background:
+        radial-gradient(ellipse at 50% -15%, #392650 0%, transparent 48%),
+        radial-gradient(circle at 90% 80%, #24152f 0%, transparent 35%),
+        var(--bg-deep);
+
+    color: var(--text);
+    font-family: var(--font-main);
+    overflow-x: hidden;
+}
+
+.game-container {
+    position: relative;
+    max-width: 1750px;
+    margin: auto;
+    z-index: 1;
+}
+
+/* =====================================
+   ATMOSFERA
+===================================== */
+
+.ambient {
+    position: fixed;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: .12;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.ambient-one {
+    background: var(--purple);
+    top: -180px;
+    left: 10%;
+}
+
+.ambient-two {
+    background: var(--pink);
+    bottom: -180px;
+    right: 5%;
+}
+
+.scanlines {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 10;
+    opacity: .10;
+
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        #000 4px
+    );
+}
+
+/* =====================================
+   CABEÇALHO
+===================================== */
+
+.topbar {
+    min-height: 105px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 25px;
+
+    padding: 18px 25px;
+    margin-bottom: 12px;
+
+    background:
+        linear-gradient(110deg, #21182e, #14101f 65%, #20152b);
+
+    border: 1px solid var(--border-light);
+    border-left: 4px solid var(--pink);
+
+    box-shadow:
+        0 10px 35px #0008,
+        inset 0 1px #ffffff0b;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.brand-symbol {
+    width: 60px;
+    height: 60px;
+    display: grid;
+    place-items: center;
+
+    border: 1px solid var(--purple);
+    background: #39264d;
+    color: var(--pink);
+
+    font-size: 34px;
+    text-shadow: 0 0 15px var(--pink);
+
+    box-shadow:
+        0 0 18px #9873d433,
+        inset 0 0 15px #9873d422;
+}
+
+.brand-info h1 {
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 5px;
+    line-height: 1;
+}
+
+.system-label {
+    display: block;
+    margin-bottom: 5px;
+
+    color: var(--cyan);
+    font-family: var(--font-tech);
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+.brand-subtitle {
+    display: block;
+    margin-top: 7px;
+
+    color: var(--muted);
+    font-family: var(--font-tech);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+}
+
+.brand-subtitle span {
+    color: var(--pink);
+}
+
+.header-center {
+    text-align: center;
+}
+
+.mission-status {
+    color: var(--pink);
+    font-family: var(--font-tech);
+    font-size: 12px;
+    letter-spacing: 1.5px;
+}
+
+.status-indicator {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 8px;
+
+    border-radius: 50%;
+    background: var(--pink);
+    box-shadow: 0 0 12px var(--pink);
+
+    animation: pulse 1.8s infinite;
+}
+
+.header-data {
+    min-width: 125px;
+    padding-left: 20px;
+    border-left: 1px solid var(--border);
+    font-family: var(--font-tech);
+}
+
+.header-data strong {
+    display: block;
+    font-size: 15px;
+    letter-spacing: 1px;
+}
+
+.header-data small {
+    display: block;
+    margin-top: 5px;
+    color: var(--pink);
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+/* =====================================
+   BARRA DE SISTEMA
+===================================== */
+
+.system-bar {
+    min-height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    padding: 8px 15px;
+    margin-bottom: 17px;
+
+    background: #151020;
+    border: 1px solid #392b4b;
+
+    color: var(--muted);
+    font-family: var(--font-tech);
+    font-size: 10px;
+    letter-spacing: .8px;
+}
+
+.system-bar strong {
+    color: var(--cyan);
+    font-weight: 400;
+}
+
+.system-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 6px;
+
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 8px var(--green);
+}
+
+.system-warning {
+    color: var(--pink);
+}
+
+/* =====================================
+   LAYOUT PRINCIPAL
+===================================== */
+
+.dashboard {
+    display: grid;
+    grid-template-columns: 285px minmax(400px, 1fr) 310px;
+    gap: 16px;
+    align-items: start;
+}
+
+.left-column,
+.right-column {
+    display: grid;
+    gap: 16px;
+    min-width: 0;
+}
+
+.panel {
+    position: relative;
+    min-width: 0;
+    padding: 19px;
+
+    background:
+        linear-gradient(145deg, #211a31, #14101f 80%);
+
+    border: 1px solid var(--border);
+    box-shadow:
+        0 8px 25px #0007,
+        inset 0 1px #ffffff08;
+
+    overflow: hidden;
+}
+
+.panel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 65px;
+    height: 2px;
+    background: var(--cyan);
+    box-shadow: 0 0 10px var(--cyan);
+}
+
+.panel-topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+
+    border-bottom: 1px solid #ffffff12;
+}
+
+.panel-index {
+    color: var(--purple);
+    font-family: var(--font-tech);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+}
+
+.panel-decoration {
+    color: var(--pink);
+    font-size: 19px;
+    text-shadow: 0 0 10px var(--pink);
+}
+
+.eyebrow {
+    display: block;
+    color: var(--cyan);
+    font-family: var(--font-tech);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    line-height: 1.5;
+}
+
+.panel h2 {
+    margin: 6px 0 10px;
+    font-size: 23px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.panel h3 {
+    font-size: 15px;
+}
+
+.description {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.separator {
+    height: 1px;
+    margin: 19px 0;
+    background: linear-gradient(90deg, var(--border-light), transparent);
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.section-heading h3 {
+    color: var(--cyan);
+    font-family: var(--font-tech);
+    font-size: 11px;
+    letter-spacing: 1px;
+}
+
+.section-heading > span {
+    color: var(--muted);
+    font-family: var(--font-tech);
+    font-size: 9px;
+}
+
+/* =====================================
+   MISSÃO
+===================================== */
+
+.mission-code {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-top: 16px;
+    padding: 9px 10px;
+
+    background: #0e0b17;
+    border-left: 2px solid var(--purple);
+
+    font-family: var(--font-tech);
+    font-size: 10px;
+}
+
+.mission-code span {
+    color: var(--muted);
+}
+
+.mission-code strong {
+    color: var(--cyan);
+    font-weight: 400;
+}
+
+/* =====================================
+   OBJETIVOS
+===================================== */
+
+.objective {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    min-width: 0;
+    padding: 12px 9px;
+    margin-bottom: 7px;
+
+    background: #ffffff05;
+    border: 1px solid #ffffff0b;
+    border-left: 2px solid var(--pink);
+
+    transition: .2s;
+}
+
+.objective:hover {
+    background: #9873d411;
+    border-color: var(--border-light);
+}
+
+.objective-icon {
+    color: var(--pink);
+    font-size: 23px;
+}
+
+.objective-info {
+    min-width: 0;
+}
+
+.objective strong {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.objective small {
+    display: block;
+    margin-top: 3px;
+    color: var(--muted);
+    font-family: var(--font-tech);
+    font-size: 9px;
+}
+
+.objective-state {
+    margin-left: auto;
+    color: var(--pink);
+    font-family: var(--font-tech);
+    font-size: 8px;
+    white-space: nowrap;
+}
+
+.objective.completed {
+    border-left-color: var(--green);
+    background: #75dce20a;
+}
+
+.objective.completed .objective-icon,
+.objective.completed .objective-state {
+    color: var(--green);
+}
+
+/* =====================================
+   BOTÕES DE OBJETIVO
+===================================== */
+
+.objective-actions {
+    display: grid;
+    gap: 8px;
+    margin-top: 13px;
+}
+
+.action-button {
+    width: 100%;
+    min-height: 39px;
+    padding: 9px;
+
+    background: #211a32;
+    border: 1px solid var(--border-light);
+
+    color: var(--text);
+    font-family: var(--font-tech);
+    font-size: 10px;
+    letter-spacing: .5px;
+
+    cursor: pointer;
+    transition: .2s;
+}
+
+.action-button span {
+    margin-right: 6px;
+    color: var(--pink);
+}
+
+.action-button:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: #75dce20d;
+    box-shadow: 0 0 13px #75dce222;
+}
+
+.action-button:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+/* =====================================
+   INVENTÁRIO
+===================================== */
+
+.inventory-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 11px 9px;
+    margin-bottom: 6px;
+
+    background: #0e0b17;
+    border: 1px solid #ffffff0b;
+}
+
+.inventory-icon {
+    color: var(--cyan);
+    font-size: 21px;
+}
+
+.inventory-item strong {
+    display: block;
+    font-size: 12px;
+}
+
+.inventory-item small {
+    display: block;
+    margin-top: 3px;
+    color: var(--muted);
+    font-family: var(--font-tech);
+    font-size: 10px;
+}
+
+.inventory-indicator {
+    width: 7px;
+    height: 7px;
+    margin-left: auto;
+    border-radius: 50%;
+    background: #51445f;
+}
+
+.panel-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    margin-top: 17px;
+    padding-top: 11px;
+
+    border-top: 1px solid #ffffff12;
+
+    color: var(--muted);
+    font-family: var(--font-tech);
+    font-size: 8px;
+    letter-spacing: .7px;
+}
+
+/* =====================================
+   MAPA
+===================================== */
+
+.map-panel {
+    min-height: 650px;
+    padding: 21px;
+}
+
+.panel-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 17px;
+}
+
+.map-counter {
+    padding: 7px 9px;
+    border: 1px solid var(--border-light);
+    background: #0e0b17;
+
+    color: var(--cyan);
+    font-family: var(--font-tech);
+    font-size: 10px;
+    white-space: nowrap;
+}
+
+.map-toolbar {
+    display: flex;
+    gap: 0;
+    margin-bottom: 13px;
+
+    background: #0e0b17;
+    border: 1px solid var(--border);
+}
+
+.map-toolbar-item {
+    flex: 1;
+    padding: 9px 11px;
+    border-right: 1px solid var(--border);
+}
+
+.map-toolbar-item:last-child {
+    border-right: none;
+}
+
+.map-toolbar-item span {
+    display: block;
+    color: var(--muted);
+    font-family: var(--font-tech);
+    font-size: 8px;
+    letter-spacing: 1px;
+}
+
+.map-toolbar-item strong {
+    display: block;
+    margin-top: 4px;
+    color: var(--cyan);
+    font-family: var(--font-tech);
+    font-size: 11px;
+    font-weight: 400;
+}
+
+.scan-status {
+    color: var(--pink) !important;
+}
+
+.map-frame {
+    position: relative;
+    padding: 30px 12px;
+
+    background: #090811;
+    border: 1px solid var(--border-light);
+
+    box-shadow:
+        inset 0 0 40px #9873d41a,
+        0 0 15px #9873d411;
+}
+
+.map-frame::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+
+    background: linear-gradient(
+        180deg,
+        #9873d408,
+        transparent 20%,
+        transparent 80%,
+        #9873d408
+    );
+}
+
+.map-frame-label {
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    z-index: 3;
+
+    display: flex;
+    justify-content: space-between;
+
+    color: var(--purple);
+    font-family: var(--font-tech);
+    font-size: 8px;
+    letter-spacing: 1px;
+}
+
+.map-label-top {
+    top: 10px;
+}
+
+.map-label-bottom {
+    bottom: 10px;
+}
+
+.room-map {
+    position: relative;
+    min-height: 430px;
+    overflow: hidden;
+
+    background:
+        linear-gradient(#9873d414 1px, transparent 1px),
+        linear-gradient(90deg, #9873d414 1px, transparent 1px),
+        radial-gradient(circle at center, #30203e, #0b0913 80%);
+
+    background-size: 24px 24px;
+    border: 1px solid #30253e;
+}
+
+.map-placeholder {
+    min-height: 430px;
+    display: grid;
+    place-content: center;
+    gap: 12px;
+    text-align: center;
+
+    color: var(--muted);
+    font-family: var(--font-tech);
+    font-size: 12px;
+}
+
+.map-placeholder span {
+    color: var(--pink);
+    font-size: 45px;
+    text-shadow: 0 0 20px var(--pink);
+}
+
+/* =====================================
+   NÓS E CONEXÕES DO GRAFO
+===================================== */
+
+
+
+/* =========================================
+   ESCAPE PROTOCOL - CONEXÕES DO COMPLEXO
+   Corredores industriais em pixel art
+========================================= */
+
+.connections {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+}
+
+/* Configuração geral dos corredores */
+.corridor line {
+    fill: none;
+    stroke-linecap: square;
+    vector-effect: non-scaling-stroke;
+    transition:
+        stroke .3s ease,
+        stroke-width .3s ease,
+        opacity .3s ease,
+        filter .3s ease;
+}
+
+/* =========================================
+   PAREDES EXTERNAS
+========================================= */
+
+.corridor-wall {
+    stroke: #080811;
+    stroke-width: 8px;
+    opacity: .95;
+}
+
+/* =========================================
+   PISO DOS CORREDORES
+========================================= */
+
+.corridor-floor {
+    stroke: #393047;
+    stroke-width: 5px;
+}
+
+/* =========================================
+   ILUMINAÇÃO CENTRAL
+========================================= */
+
+.corridor-light {
+    stroke: #9873d4;
+    stroke-width: 1px;
+    opacity: .85;
+}
+
+/* =========================================
+   CORREDORES NORMAIS
+========================================= */
+
+.corridor-normal .corridor-floor {
+    stroke: #393047;
+}
+
+.corridor-normal .corridor-light {
+    stroke: #9873d4;
+    filter: drop-shadow(0 0 2px #9873d4);
+}
+
+/* =========================================
+   CORREDORES BLOQUEADOS
+========================================= */
+
+.corridor-blocked .corridor-wall {
+    stroke: #100a14;
+}
+
+.corridor-blocked .corridor-floor {
+    stroke: #54243e;
+}
+
+.corridor-blocked .corridor-light {
+    stroke: #d65a91;
+    stroke-dasharray: 2 2;
+    filter: drop-shadow(0 0 3px #d65a91);
+}
+
+/* =========================================
+   CORREDORES LIBERADOS
+========================================= */
+
+.corridor-unlocked .corridor-wall {
+    stroke: #080f16;
+}
+
+.corridor-unlocked .corridor-floor {
+    stroke: #234b50;
+}
+
+.corridor-unlocked .corridor-light {
+    stroke: #75dce2;
+    opacity: 1;
+    filter:
+        drop-shadow(0 0 3px #75dce2)
+        drop-shadow(0 0 5px #75dce255);
+}
+
+.room-node {
+    position: absolute;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+
+    min-width: 78px;
+    padding: 9px 6px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+
+    background: #211a32;
+    border: 1px solid var(--purple);
+    color: var(--text);
+
+    box-shadow: 0 0 12px #9873d444;
+    transition: .25s;
+}
+
+.room-id {
+    color: var(--cyan);
+    font-family: var(--font-tech);
+    font-size: 12px;
+}
+
+.room-name {
+    color: var(--text);
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.room-node.visited {
+    background: #173039;
+    border-color: var(--cyan);
+    box-shadow: 0 0 16px #75dce255;
+}
+
+.room-node.visited .room-id {
+    color: var(--green);
+}
+
+/* =====================================
+   LEGENDA DO MAPA
+===================================== */
+
+.map-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 17px;
+
+    margin: 16px 0;
+    color: var(--muted);
+    font-family: var(--font-tech);
+    font-size: 10px;
+}
+
+.legend-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 5px;
+    border-radius: 50%;
+}
+
+.legend-dot.visited {
+    background: var(--cyan);
+    box-shadow: 0 0 8px var(--cyan);
+}
+
+.legend-dot.unvisited {
+    background: var(--purple);
+    box-shadow: 0 0 7px var(--purple);
+}
+
+.legend-dot.blocked {
+    background: var(--pink);
+    box-shadow: 0 0 8px var(--pink);
+}
+
+/* =====================================
+   BOTÃO PRINCIPAL
+===================================== */
+
+.primary-button {
+    width: 100%;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+
+    padding: 14px;
+
+    background: linear-gradient(100deg, #553b78, #873c68);
+    border: 1px solid var(--pink);
+
+    color: white;
+    font-family: var(--font-tech);
+    font-size: 12px;
+    letter-spacing: 1.5px;
+
+    cursor: pointer;
+    transition: .25s;
+
+    box-shadow: 0 0 17px #d65a9133;
+}
+
+.primary-button:hover {
+    background: linear-gradient(100deg, #75509e, #a74778);
+    box-shadow: 0 0 25px #d65a9166;
+    transform: translateY(-2px);
+}
+
+.primary-button:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.button-icon {
+    color: var(--cyan);
+    font-size: 17px;
+}
+
+.button-arrow {
+    color: var(--pink);
+    font-size: 17px;
+}
+
+.map-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+
+    margin-top: 13px;
+
+    color: var(--muted);
+    font-family: var(--font-tech);
+    font-size: 8px;
+    letter-spacing: .6px;
+}
+
+/* =====================================
+   REGISTRO DE EVENTOS
+===================================== */
+
+.log-panel {
+    min-height: 365px;
+}
+
+.live-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    color: var(--pink);
+    font-family: var(--font-tech);
+    font-size: 10px;
+}
+
+.live-indicator span {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--pink);
+    box-shadow: 0 0 8px var(--pink);
+    animation: pulse 1.5s infinite;
+}
+
+.terminal-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+
+    padding: 9px;
+
+    background: #0b0912;
+    border: 1px solid var(--border);
+
+    color: var(--purple);
+    font-family: var(--font-tech);
+    font-size: 9px;
+}
+
+.event-log {
+    height: 235px;
+    overflow-y: auto;
+    padding: 10px;
+
+    background: #0b0912;
+    border: 1px solid var(--border);
+    border-top: none;
+
+    color: var(--muted);
+    font-family: var(--font-tech);
+    font-size: 10px;
+}
+
+.log-entry {
+    padding: 9px 0;
+    border-bottom: 1px solid #ffffff0d;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.log-entry span {
+    color: var(--pink);
+}
+
+.terminal-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 8px 10px;
+
+    background: #151020;
+    border: 1px solid var(--border);
+    border-top: none;
+
+    color: var(--cyan);
+    font-family: var(--font-tech);
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+.terminal-cursor {
+    animation: blink 1s steps(2, start) infinite;
+}
+
+/* =====================================
+   PILHA DE RECURSÃO
+===================================== */
+
+.stack-panel {
+    min-height: 235px;
+}
+
+.stack-description {
+    display: flex;
+    justify-content: space-between;
+    gap: 5px;
+
+    padding: 9px;
+    margin-bottom: 9px;
+
+    background: #0e0b17;
+    border: 1px solid var(--border);
+
+    color: var(--cyan);
+    font-family: var(--font-tech);
+    font-size: 9px;
+}
+
+.stack-description span {
+    color: var(--muted);
+}
+
+.recursion-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+
+    min-height: 90px;
+    max-height: 260px;
+
+    padding: 5px;
+    overflow-y: auto;
+}
+
+.stack-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    padding: 10px 12px;
+
+    background: #211a32;
+    border: 1px solid var(--purple);
+
+    color: var(--text);
+    font-family: var(--font-tech);
+    font-size: 11px;
+
+    animation: stack-enter .25s ease;
+}
+
+.stack-item.current {
+    background: #18313b;
+    border-color: var(--cyan);
+    box-shadow: 0 0 12px #75dce233;
+}
+
+.stack-item small {
+    color: var(--cyan);
+}
+
+.stack-empty {
+    padding: 25px 5px;
+    text-align: center;
+
+    color: var(--muted);
+    font-family: var(--font-tech);
+    font-size: 10px;
+}
+
+.stack-footer {
+    display: flex;
+    justify-content: space-between;
+
+    padding-top: 10px;
+    margin-top: 12px;
+
+    border-top: 1px solid #ffffff12;
+
+    color: var(--purple);
+    font-family: var(--font-tech);
+    font-size: 8px;
+    letter-spacing: 1px;
+}
+
+/* =====================================
+   PERSONAGEM
+===================================== */
+
+.character-panel {
+    padding-bottom: 16px;
+}
+
+.character-profile {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    margin: 16px 0;
+}
+
+.character-icon {
+    position: relative;
+    flex-shrink: 0;
+
+    width: 65px;
+    height: 65px;
+
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+
+    background: #30213f;
+    border: 1px solid var(--purple);
+
+    color: var(--cyan);
+    font-size: 36px;
+
+    box-shadow: 0 0 17px #9873d433;
+}
+
+.character-scan {
+    position: absolute;
+    inset: 0;
+
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 4px,
+        #0005 5px
+    );
+    pointer-events: none;
+}
+
+.character-data > span:first-child {
+    color: var(--muted);
+    font-family: var(--font-tech);
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+.character-data h3 {
+    margin: 3px 0;
+    color: var(--text);
+    font-size: 21px;
+    letter-spacing: 2px;
+}
+
+.character-data small {
+    display: block;
+    color: var(--purple);
+    font-family: var(--font-tech);
+    font-size: 9px;
+}
+
+.character-status {
+    display: block;
+    margin-top: 7px;
+
+    color: var(--green);
+    font-family: var(--font-tech);
+    font-size: 8px;
+}
+
+.character-status i {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-right: 4px;
+    border-radius: 50%;
+    background: var(--green);
+    box-shadow: 0 0 6px var(--green);
+}
+
+.character-message {
+    padding: 11px;
+
+    background: #0e0b17;
+    border-left: 2px solid var(--pink);
+}
+
+.character-message > span {
+    color: var(--pink);
+    font-family: var(--font-tech);
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+.character-message p {
+    margin-top: 7px;
+    color: var(--muted);
+    font-size: 13px;
+    font-style: italic;
+    line-height: 1.5;
+}
+
+/* =====================================
+   RODAPÉ
+===================================== */
+
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    margin-top: 17px;
+    padding: 15px 18px;
+
+    background: #13101e;
+    border: 1px solid var(--border);
+
+    color: var(--muted);
+    font-family: var(--font-tech);
+    font-size: 9px;
+    letter-spacing: 1px;
+}
+
+footer > div {
+    color: var(--text);
+}
+
+.footer-symbol {
+    margin-right: 7px;
+    color: var(--pink);
+    text-shadow: 0 0 8px var(--pink);
+}
+
+.footer-warning {
+    color: var(--pink);
+}
+
+/* =====================================
+   ANIMAÇÕES
+===================================== */
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: .35;
+    }
+}
+
+@keyframes blink {
+    to {
+        visibility: hidden;
+    }
+}
+
+@keyframes stack-enter {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =====================================
+   ROLAGENS
+===================================== */
+
+.event-log::-webkit-scrollbar,
+.recursion-stack::-webkit-scrollbar {
+    width: 5px;
+}
+
+.event-log::-webkit-scrollbar-thumb,
+.recursion-stack::-webkit-scrollbar-thumb {
+    background: var(--purple-dark);
+    border-radius: 5px;
+}
+
+/* =====================================
+   RESPONSIVIDADE
+===================================== */
+
+@media (max-width: 1250px) {
+    .dashboard {
+        grid-template-columns: 260px minmax(350px, 1fr);
+    }
+
+    .map-panel {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .right-column {
+        grid-column: 1 / -1;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .character-panel {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 800px) {
+    body {
+        padding: 12px;
+    }
+
+    .topbar {
+        flex-wrap: wrap;
+    }
+
+    .header-center {
+        text-align: left;
+    }
+
+    .header-data {
+        display: none;
+    }
+
+    .system-bar {
+        flex-wrap: wrap;
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .map-panel {
+        grid-column: auto;
+        grid-row: auto;
+    }
+
+    .right-column {
+        grid-column: auto;
+        grid-template-columns: 1fr;
+    }
+
+    .character-panel {
+        grid-column: auto;
+    }
+
+    .room-map {
+        min-height: 380px;
+    }
+
+    .map-placeholder {
+        min-height: 380px;
+    }
+}
+
+@media (max-width: 520px) {
+    .brand-info h1 {
+        font-size: 23px;
+        letter-spacing: 3px;
+    }
+
+    .brand-symbol {
+        width: 48px;
+        height: 48px;
+    }
+
+    .panel {
+        padding: 15px;
+    }
+
+    .map-toolbar-item {
+        padding: 8px 5px;
+    }
+
+    .map-toolbar-item strong {
+        font-size: 9px;
+    }
+
+    .map-footer {
+        flex-direction: column;
+    }
+
+    footer {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+
+
+/* =====================================
+   AJUSTES DE LAYOUT — ESCAPE PROTOCOL
+   Mantém a identidade visual original
+===================================== */
+
+/* Aproveitamento da tela */
+body {
+    padding: 14px 20px;
+}
+
+.game-container {
+    width: 100%;
+    max-width: 1750px;
+}
+
+/* Cabeçalho mais compacto */
+.topbar {
+    min-height: 82px;
+    padding: 12px 20px;
+    margin-bottom: 9px;
+}
+
+.brand-symbol {
+    width: 48px;
+    height: 48px;
+    font-size: 28px;
+}
+
+.brand-info h1 {
+    font-size: 26px;
+}
+
+.brand-subtitle {
+    margin-top: 4px;
+}
+
+.system-label {
+    margin-bottom: 3px;
+}
+
+/* Barra de informações */
+.system-bar {
+    min-height: 30px;
+    padding: 6px 12px;
+    margin-bottom: 12px;
+    font-size: 9px;
+}
+
+/* Três colunas principais */
+.dashboard {
+    display: grid;
+    grid-template-columns: 260px minmax(420px, 1fr) 320px;
+    gap: 12px;
+    align-items: start;
+}
+
+.left-column,
+.right-column {
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+}
+
+/* Painéis mais compactos */
+.panel {
+    padding: 15px;
+}
+
+.panel-topline {
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+}
+
+.panel h2 {
+    font-size: 20px;
+    margin: 5px 0 7px;
+}
+
+.separator {
+    margin: 13px 0;
+}
+
+.section-heading {
+    margin-bottom: 9px;
+}
+
+/* Objetivos */
+.objective {
+    padding: 9px 8px;
+    margin-bottom: 5px;
+}
+
+.objective-actions {
+    gap: 6px;
+    margin-top: 9px;
+}
+
+.action-button {
+    min-height: 34px;
+    padding: 7px;
+    font-size: 9px;
+}
+
+/* Inventário */
+.inventory-item {
+    padding: 8px;
+    margin-bottom: 5px;
+}
+
+.panel-footer {
+    margin-top: 12px;
+    padding-top: 8px;
+}
+
+/* Mapa */
+.map-panel {
+    min-height: unset;
+    padding: 16px;
+}
+
+.panel-heading {
+    margin-bottom: 12px;
+}
+
+.map-toolbar {
+    margin-bottom: 9px;
+}
+
+.map-toolbar-item {
+    padding: 7px 9px;
+}
+
+.map-frame {
+    padding: 25px 10px;
+}
+
+.room-map {
+    min-height: 310px;
+}
+
+.map-placeholder {
+    min-height: 310px;
+}
+
+.map-legend {
+    gap: 12px;
+    margin: 11px 0;
+    font-size: 9px;
+}
+
+.primary-button {
+    min-height: 44px;
+    padding: 10px;
+}
+
+.map-footer {
+    margin-top: 9px;
+}
+
+/* Alex em destaque, mas ocupando menos altura */
+.character-panel {
+    padding-bottom: 12px;
+}
+
+.character-profile {
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.character-panel .alex-stage {
+    width: 128px;
+    min-width: 128px;
+    height: 160px;
+}
+
+.character-panel .alex-sprite {
+    transform: scale(.8);
+}
+
+.character-data h3 {
+    font-size: 20px;
+}
+
+.character-message {
+    padding: 9px;
+}
+
+.character-message p {
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+.alex-animation-status {
+    margin-top: 8px;
+    padding-top: 7px;
+    font-size: 9px;
+}
+
+/* Registro de eventos */
+.log-panel {
+    min-height: unset;
+}
+
+.log-panel .panel-heading {
+    margin-bottom: 9px;
+}
+
+.log-panel .panel-heading h2 {
+    font-size: 18px;
+}
+
+.terminal-header {
+    padding: 7px;
+}
+
+.event-log {
+    height: 125px;
+    min-height: 125px;
+    padding: 8px;
+    font-size: 9px;
+}
+
+.log-entry {
+    padding: 6px 0;
+}
+
+.terminal-footer {
+    padding: 6px 8px;
+}
+
+/* Pilha de recursão */
+.stack-panel {
+    min-height: unset;
+}
+
+.stack-panel .panel-heading {
+    margin-bottom: 9px;
+}
+
+.stack-panel .panel-heading h2 {
+    font-size: 18px;
+}
+
+.stack-description {
+    padding: 7px;
+    margin-bottom: 6px;
+    font-size: 8px;
+}
+
+.recursion-stack {
+    min-height: 65px;
+    max-height: 145px;
+    gap: 5px;
+    padding: 4px;
+}
+
+.stack-item {
+    padding: 7px 9px;
+    font-size: 10px;
+}
+
+.stack-empty {
+    padding: 15px 5px;
+}
+
+.stack-footer {
+    padding-top: 7px;
+    margin-top: 8px;
+}
+
+/* Rodapé */
+footer {
+    margin-top: 12px;
+    padding: 11px 15px;
+    font-size: 8px;
+}
+
+/* Telas menores que desktop */
+@media (max-width: 1250px) {
+    .dashboard {
+        grid-template-columns: 240px minmax(350px, 1fr);
+    }
+
+    .map-panel {
+        grid-column: 2;
+        grid-row: 1;
+    }
+
+    .right-column {
+        grid-column: 1 / -1;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .character-panel {
+        grid-column: 1 / -1;
+    }
+
+    .character-panel .character-profile {
+        justify-content: flex-start;
+    }
+}
+
+/* Tablets e celulares */
+@media (max-width: 800px) {
+    body {
+        padding: 10px;
+    }
+
+    .topbar {
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .header-center {
+        text-align: left;
+    }
+
+    .header-data {
+        display: none;
+    }
+
+    .system-bar {
+        flex-wrap: wrap;
+        gap: 8px 14px;
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+
+    .map-panel {
+        grid-column: auto;
+        grid-row: auto;
+    }
+
+    .right-column {
+        grid-column: auto;
+        grid-template-columns: 1fr;
+    }
+
+    .character-panel {
+        grid-column: auto;
+    }
+
+    .room-map,
+    .map-placeholder {
+        min-height: 320px;
+    }
+
+    footer {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+/* Celulares pequenos */
+@media (max-width: 520px) {
+    .brand-info h1 {
+        font-size: 22px;
+        letter-spacing: 3px;
+    }
+
+    .brand-symbol {
+        width: 42px;
+        height: 42px;
+    }
+
+    .panel {
+        padding: 13px;
+    }
+
+    .map-toolbar-item {
+        padding: 7px 5px;
+    }
+
+    .map-toolbar-item strong {
+        font-size: 9px;
+    }
+
+    .map-footer {
+        flex-direction: column;
+    }
+
+    .character-panel .alex-stage {
+        width: 120px;
+        min-width: 120px;
+    }
+}
+
+/* Monitores com pouca altura disponível */
+@media (min-width: 1251px) and (max-height: 900px) {
+    body {
+        padding-top: 9px;
+        padding-bottom: 9px;
+    }
+
+    .topbar {
+        min-height: 72px;
+        padding: 9px 16px;
+    }
+
+    .brand-symbol {
+        width: 42px;
+        height: 42px;
+    }
+
+    .brand-info h1 {
+        font-size: 23px;
+    }
+
+    .system-bar {
+        margin-bottom: 9px;
+    }
+
+    .dashboard {
+        gap: 10px;
+    }
+
+    .left-column,
+    .right-column {
+        gap: 9px;
+    }
+
+    .panel {
+        padding: 12px;
+    }
+
+    .room-map,
+    .map-placeholder {
+        min-height: 275px;
+    }
+
+    .map-frame {
+        padding: 23px 9px;
+    }
+
+    .event-log {
+        height: 105px;
+        min-height: 105px;
+    }
+
+    .recursion-stack {
+        max-height: 115px;
+    }
+
+    .character-panel .alex-stage {
+        height: 145px;
+    }
+
+    footer {
+        margin-top: 9px;
+        padding: 9px 13px;
+    }
+}
+
+
+/* =====================================
+   EQUILÍBRIO VERTICAL DAS COLUNAS
+===================================== */
+
+@media (min-width: 1251px) {
+    .dashboard {
+        align-items: stretch;
+    }
+
+    .left-column {
+        align-content: stretch;
+    }
+
+    .objectives-panel {
+        height: 100%;
+    }
+
+    .map-panel {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .map-frame {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .room-map {
+        flex: 1;
+        min-height: 310px;
+    }
+
+    .map-placeholder {
+        height: 100%;
+    }
+}
+
+
+/* =========================================
+   ESCAPE PROTOCOL — PIXEL ART DIRECTION
+   Primeira camada de identidade visual
+========================================= */
+
+:root {
+    --pixel-edge: #59436f;
+    --pixel-shadow: #08060f;
+    --pixel-highlight: #a88ad8;
+}
+
+/* Painéis com acabamento mais definido */
+
+.panel {
+    background:
+        linear-gradient(135deg, #211a31 0%, #171222 55%, #110e1b 100%);
+
+    border: 1px solid var(--pixel-edge);
+
+    box-shadow:
+        3px 3px 0 #08060f,
+        0 0 0 1px #30223f,
+        inset 1px 1px 0 #ffffff0c;
+
+    border-radius: 0;
+}
+
+.panel::before {
+    width: 48px;
+    height: 3px;
+    box-shadow: none;
+}
+
+/* Detalhes de cantos */
+
+.panel-topline {
+    border-bottom: 1px solid #493657;
+}
+
+.panel-index {
+    color: var(--pixel-highlight);
+}
+
+/* Cabeçalho */
+
+.topbar {
+    background:
+        linear-gradient(90deg, #21182e, #171020 60%, #21172c);
+
+    border: 1px solid var(--pixel-edge);
+    border-left: 4px solid var(--pink);
+
+    box-shadow:
+        3px 3px 0 #08060f,
+        inset 0 1px 0 #ffffff0c;
+}
+
+.brand-symbol {
+    border: 2px solid var(--purple);
+    box-shadow: 3px 3px 0 #08060f;
+    text-shadow: none;
+}
+
+/* Barra de sistema */
+
+.system-bar {
+    background: #100d19;
+    border-color: #493657;
+    box-shadow: 2px 2px 0 #08060f;
+}
+
+/* Objetivos e inventário */
+
+.objective,
+.inventory-item {
+    border-radius: 0;
+    box-shadow: 2px 2px 0 #08060f;
+}
+
+.objective {
+    background: #1b1528;
+}
+
+.objective:hover {
+    background: #29203b;
+    box-shadow: 2px 2px 0 #08060f;
+}
+
+.inventory-item {
+    background: #100d19;
+}
+
+/* Botões */
+
+.action-button,
+.primary-button {
+    border-radius: 0;
+    box-shadow: 3px 3px 0 #08060f;
+}
+
+.action-button:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 #08060f;
+}
+
+.primary-button {
+    background: linear-gradient(90deg, #51396e, #713d65);
+    box-shadow:
+        3px 3px 0 #08060f,
+        inset 1px 1px 0 #ffffff18;
+}
+
+.primary-button:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 4px 4px 0 #08060f;
+}
+
+/* Mapa: aparência de terminal de exploração */
+
+.map-frame {
+    background: #090711;
+    border: 2px solid #59436f;
+
+    box-shadow:
+        inset 0 0 0 3px #171020,
+        3px 3px 0 #08060f;
+}
+
+.room-map {
+    background:
+        linear-gradient(#9873d40d 1px, transparent 1px),
+        linear-gradient(90deg, #9873d40d 1px, transparent 1px),
+        radial-gradient(circle at center, #241a32, #0b0913 85%);
+
+    background-size: 16px 16px;
+    border: 1px solid #493657;
+}
+
+/* Salas do grafo */
+
+.room-node {
+    border: 2px solid var(--purple);
+    border-radius: 0;
+
+    background: #21182e;
+
+    box-shadow:
+        2px 2px 0 #08060f,
+        0 0 0 1px #08060f;
+
+    transition: background .15s, border-color .15s;
+}
+
+.room-node.visited {
+    background: #173039;
+    border-color: var(--cyan);
+
+    box-shadow:
+        2px 2px 0 #08060f,
+        0 0 0 1px #08060f;
+}
+
+/* Conexões do grafo */
+
+.connection {
+    filter: none;
+}
+
+.connection-blocked,
+.connection-unlocked {
+    filter: none;
+}
+
+/* Terminal e registros */
+
+.terminal-header,
+.event-log,
+.terminal-footer {
+    border-radius: 0;
+}
+
+.terminal-header {
+    background: #100c18;
+}
+
+.event-log {
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            #0b0912 0px,
+            #0b0912 19px,
+            #ffffff05 20px
+        );
+}
+
+/* Pilha de recursão */
+
+.stack-description,
+.stack-item {
+    border-radius: 0;
+}
+
+.stack-item {
+    box-shadow: 2px 2px 0 #08060f;
+}
+
+.stack-item.current {
+    box-shadow:
+        2px 2px 0 #08060f,
+        inset 2px 0 0 var(--cyan);
+}
+
+/* Personagem */
+
+.character-icon {
+    border-radius: 0;
+    box-shadow: 3px 3px 0 #08060f;
+}
+
+/* Quando os sprites definitivos forem adicionados */
+
+.alex-sprite {
+    image-rendering: pixelated;
+}
+
+/* Rodapé */
+
+footer {
+    background: #100d19;
+    border-color: var(--pixel-edge);
+    box-shadow: 2px 2px 0 #08060f;
+}
+
+/* Evita arredondamentos inconsistentes */
+
+.map-counter,
+.map-toolbar,
+.map-toolbar-item,
+.mission-code,
+.character-message {
+    border-radius: 0;
+}
+
+/* Respeita a preferência por movimento reduzido */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+
+
+
+/* =========================================
+   ROOM NODES — BORDAS COM CANTOS RECORTADOS
+========================================= */
+
+.room-node {
+    min-width: 88px;
+    padding: 10px 9px;
+    gap: 4px;
+
+    position: absolute;
+    isolation: isolate;
+
+    background: #21172f;
+    border: none;
+
+    clip-path: polygon(
+        6px 0,
+        calc(100% - 6px) 0,
+        100% 6px,
+        100% calc(100% - 6px),
+        calc(100% - 6px) 100%,
+        6px 100%,
+        0 calc(100% - 6px),
+        0 6px
+    );
+
+    filter: drop-shadow(2px 3px 0 #08060f);
+    transition: background .2s, filter .2s;
+}
+
+/* Contorno externo */
+
+.room-node::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    background: #9873d4;
+
+    clip-path: polygon(
+        6px 0,
+        calc(100% - 6px) 0,
+        100% 6px,
+        100% calc(100% - 6px),
+        calc(100% - 6px) 100%,
+        6px 100%,
+        0 calc(100% - 6px),
+        0 6px
+    );
+}
+
+/* Fundo interno */
+
+.room-node::after {
+    content: "";
+    position: absolute;
+    inset: 1px;
+    z-index: -1;
+
+    background: linear-gradient(
+        145deg,
+        #30213f,
+        #21172f 60%,
+        #171222
+    );
+
+    clip-path: polygon(
+        5px 0,
+        calc(100% - 5px) 0,
+        100% 5px,
+        100% calc(100% - 5px),
+        calc(100% - 5px) 100%,
+        5px 100%,
+        0 calc(100% - 5px),
+        0 5px
+    );
+}
+
+.room-id {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #91e5e8;
+}
+
+.room-name {
+    font-size: 10px;
+    color: #eee6f5;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* Sala visitada */
+
+.room-node.visited::before {
+    background: #75dce2;
+}
+
+.room-node.visited::after {
+    background: linear-gradient(
+        145deg,
+        #24505a,
+        #173039 65%,
+        #10232e
+    );
+}
+
+.room-node.visited .room-id {
+    color: #a6f1d8;
+}
+
+/* Hover */
+
+.room-node:hover::before {
+    background: #c4a5f0;
+}
+
+.room-node:hover::after {
+    background: linear-gradient(
+        145deg,
+        #49345f,
+        #30213f
+    );
+}
+
+.room-node.visited:hover::after {
+    background: linear-gradient(
+        145deg,
+        #28616a,
+        #173b45
+    );
+}
+
+@media (max-width: 520px) {
+    .room-node {
+        min-width: 76px;
+        padding: 8px 6px;
+    }
+
+    .room-name {
+        font-size: 9px;
+    }
+}
+
+
+/* =========================================
+   ESCAPE PROTOCOL — MÓDULOS EM PLANTA BAIXA
+========================================= */
+
+.room-node {
+    width: 108px;
+    min-width: 108px;
+    padding: 5px 5px 6px;
+    gap: 4px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    background: transparent;
+    border: none;
+    clip-path: none;
+    filter: none;
+    box-shadow: none;
+}
+
+/* Planta baixa de cada sala */
+
+.room-plan {
+    position: relative;
+    width: 96px;
+    height: 43px;
+    overflow: hidden;
+
+    background-color: #171321;
+    background-image:
+        linear-gradient(#9873d414 1px, transparent 1px),
+        linear-gradient(90deg, #9873d414 1px, transparent 1px);
+
+    background-size: 7px 7px;
+
+    border: 2px solid #9873d4;
+    box-shadow:
+        2px 2px 0 #08060f,
+        inset 0 0 9px #08060f;
+}
+
+/* Paredes */
+
+.plan-wall {
+    position: absolute;
+    z-index: 2;
+    background: #a18aaf;
+    box-shadow: 0 0 3px #9873d466;
+}
+
+.plan-wall-top {
+    top: 2px;
+    left: 3px;
+    right: 3px;
+    height: 2px;
+}
+
+.plan-wall-bottom {
+    bottom: 2px;
+    left: 3px;
+    right: 3px;
+    height: 2px;
+}
+
+/* Porta */
+
+.plan-door {
+    position: absolute;
+    z-index: 3;
+    right: 10px;
+    bottom: 0;
+
+    width: 11px;
+    height: 7px;
+
+    background: #171321;
+    border-top: 1px solid var(--cyan);
+    border-left: 1px solid var(--cyan);
+    border-right: 1px solid var(--cyan);
+}
+
+/* Equipamentos e móveis */
+
+/* Equipamentos e móveis — pixel art */
+
+.plan-object {
+    position: absolute;
+    display: block;
+    box-sizing: border-box;
+
+    background: #604b76;
+    border: 1px solid #b99ad8;
+
+    border-radius: 0;
+
+    box-shadow:
+        inset 2px 2px #ffffff20,
+        2px 2px 0 #080711;
+
+    image-rendering: pixelated;
+}
+
+.object-a {
+    top: 9px;
+    left: 8px;
+    width: 19px;
+    height: 12px;
+}
+
+.object-b {
+    top: 9px;
+    right: 9px;
+    width: 15px;
+    height: 10px;
+}
+
+.object-c {
+    bottom: 7px;
+    left: 37px;
+    width: 20px;
+    height: 8px;
+}
+
+/* Identificação */
+
+.room-id {
+    font-family: var(--font-tech);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #b99ad8;
+}
+
+.room-name {
+    max-width: 108px;
+    color: #eee6f5;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.1;
+    text-align: center;
+}
+
+/* =========================================
+   IDENTIDADE DE CADA AMBIENTE
+========================================= */
+
+/* Recepção — balcão e assentos */
+.room-plan[data-room="R01"] .object-a {
+    width: 35px;
+    height: 8px;
+    left: 8px;
+    top: 11px;
+}
+
+.room-plan[data-room="R01"] .object-b,
+.room-plan[data-room="R01"] .object-c {
+    width: 7px;
+    height: 7px;
+    border-radius: 0;
+}
+
+/* Segurança — consoles */
+.room-plan[data-room="R02"] .object-a,
+.room-plan[data-room="R02"] .object-b {
+    background: #24505a;
+    border-color: var(--cyan);
+    width: 23px;
+    height: 9px;
+}
+
+.room-plan[data-room="R02"] .object-c {
+    background: #30213f;
+    border-color: var(--pink);
+    width: 17px;
+}
+
+/* Corredor Norte — passagem */
+.room-plan[data-room="R03"] .object-a {
+    left: 7px;
+    top: 13px;
+    width: 80px;
+    height: 5px;
+    background: #30213f;
+}
+
+.room-plan[data-room="R03"] .object-b,
+.room-plan[data-room="R03"] .object-c {
+    display: none;
+}
+
+/* Arquivo — armários */
+.room-plan[data-room="R04"] .plan-object {
+    width: 12px;
+    height: 25px;
+    top: 8px;
+    background: #49345f;
+}
+
+/* Depósito — caixas */
+.room-plan[data-room="R05"] .plan-object {
+    width: 15px;
+    height: 12px;
+    background: #70543f;
+    border-color: #c69b6b;
+}
+
+/* Laboratório — bancadas */
+.room-plan[data-room="R06"] .plan-object {
+    background: #24505a;
+    border-color: #75dce2;
+    height: 9px;
+}
+
+/* Energia — geradores */
+.room-plan[data-room="R07"] .plan-object {
+    background: #654b30;
+    border-color: #e8b76b;
+}
+
+.room-plan[data-room="R07"] .object-a {
+    width: 23px;
+    height: 22px;
+}
+
+.room-plan[data-room="R07"] .object-b {
+    width: 23px;
+    height: 22px;
+}
+
+/* Oficina — máquinas */
+.room-plan[data-room="R08"] .plan-object {
+    background: #49345f;
+    border-color: #b99ad8;
+    width: 20px;
+    height: 15px;
+}
+
+/* Ala médica — leitos */
+.room-plan[data-room="R09"] .plan-object {
+    background: #24505a;
+    border-color: #91d9c0;
+    width: 29px;
+    height: 10px;
+}
+
+/* Controle central — painel de comando */
+.room-plan[data-room="R10"] .plan-object {
+    background: #24505a;
+    border-color: var(--cyan);
+}
+
+.room-plan[data-room="R10"] .object-a {
+    width: 30px;
+    height: 17px;
+}
+
+/* Câmara de contenção */
+.room-plan[data-room="R11"] .plan-object {
+    background: #48243e;
+    border-color: var(--pink);
+}
+
+.room-plan[data-room="R11"] .object-a {
+    left: 32px;
+    top: 9px;
+    width: 28px;
+    height: 22px;
+}
+
+/* Saída — porta de emergência */
+.room-plan[data-room="R12"] .plan-object {
+    background: #24505a;
+    border-color: var(--cyan);
+}
+
+.room-plan[data-room="R12"] .object-a {
+    left: 34px;
+    width: 25px;
+    height: 22px;
+}
+
+/* =========================================
+   ESTADO DAS SALAS
+========================================= */
+
+.room-node.visited .room-plan {
+    border-color: var(--cyan);
+    background-color: #10232e;
+    box-shadow:
+        2px 2px 0 #08060f,
+        inset 0 0 12px #75dce222;
+}
+
+.room-node.visited .room-id {
+    color: #91d9c0;
+}
+
+.room-node:hover .room-plan {
+    border-color: #d0b5ff;
+    filter: brightness(1.3);
+}
+
+.room-node:hover .room-id {
+    color: #d0b5ff;
+}
+
+/* Responsividade */
+
+@media (max-width: 520px) {
+    .room-node {
+        width: 88px;
+        min-width: 88px;
+    }
+
+    .room-plan {
+        width: 80px;
+        height: 38px;
+    }
+
+    .room-name {
+        max-width: 88px;
+        font-size: 9px;
+    }
+}
+
+
+
+/* =========================================
+   ESCAPE PROTOCOL - PLANTAS DAS SALAS
+   Estilo: Pixel Art 32-bit / Sci-fi Horror
+========================================= */
+
+/* Estrutura dos módulos */
+.room-node {
+    width: 94px;
+    min-width: 94px;
+    padding: 5px;
+    gap: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Planta baixa */
+.room-floorplan {
+    position: relative;
+    display: block;
+    flex-shrink: 0;
+    width: 68px;
+    height: 30px;
+    overflow: hidden;
+    background-color: #11101c;
+    background-image:
+        linear-gradient(#292438 1px, transparent 1px),
+        linear-gradient(90deg, #292438 1px, transparent 1px);
+    background-size: 6px 6px;
+    border: 2px solid #77718d;
+    box-shadow:
+        inset 0 0 0 2px #292438,
+        inset 0 0 9px #080711,
+        0 0 5px #75dce233;
+    image-rendering: pixelated;
+}
+
+/* Divisórias */
+.room-floorplan::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background: #77718d;
+    opacity: .8;
+    z-index: 1;
+}
+
+/* Porta de entrada */
+.room-door {
+    position: absolute;
+    width: 9px;
+    height: 3px;
+    bottom: -1px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #75dce2;
+    box-shadow:
+        0 0 4px #75dce2,
+        0 -2px 0 #398b9a;
+    z-index: 4;
+}
+
+/* Objetos gerais */
+.room-object {
+    position: absolute;
+    display: block;
+    z-index: 2;
+    background: #9873d4;
+    border: 1px solid #c3a7ed;
+    box-shadow: 0 0 4px #9873d455;
+    box-sizing: border-box;
+}
+
+.object-one {
+    width: 12px;
+    height: 7px;
+    left: 9px;
+    top: 6px;
+}
+
+.object-two {
+    width: 8px;
+    height: 8px;
+    right: 9px;
+    bottom: 6px;
+}
+
+/* =========================================
+   R01 - RECEPÇÃO
+   Balcão, área de espera e assentos
+========================================= */
+
+.room-floorplan.reception {
+    background-color: #171626;
+}
+
+.room-floorplan.reception .object-one {
+    width: 25px;
+    height: 7px;
+    left: 5px;
+    top: 5px;
+    background: #68518b;
+    border: 1px solid #b99ae4;
+    box-shadow:
+        0 3px 0 #3b3153,
+        inset 0 2px #c3a7ed;
+}
+
+.room-floorplan.reception .object-one::before {
+    content: "";
+    position: absolute;
+    width: 7px;
+    height: 3px;
+    right: 2px;
+    top: 1px;
+    background: #75dce2;
+    box-shadow: 0 0 4px #75dce2;
+}
+
+.room-floorplan.reception .object-two {
+    width: 5px;
+    height: 5px;
+    right: 8px;
+    bottom: 8px;
+    background: #75dce2;
+    border: 1px solid #b4f5f1;
+    box-shadow:
+        -10px 0 #75dce2,
+        -10px 0 0 1px #398b9a;
+}
+
+.room-floorplan.reception .object-two::before {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    left: -2px;
+    top: -8px;
+    background: #9873d4;
+    box-shadow: 8px 0 #9873d4;
+}
+
+/* =========================================
+   R02 - SEGURANÇA
+   Console de vigilância e monitores
+========================================= */
+
+.room-floorplan.security {
+    background-color: #101925;
+}
+
+.room-floorplan.security .object-one {
+    width: 8px;
+    height: 8px;
+    left: 6px;
+    top: 4px;
+    background: #234d60;
+    border: 1px solid #75dce2;
+    box-shadow:
+        10px 0 #234d60,
+        10px 0 0 1px #75dce2,
+        20px 0 #234d60,
+        20px 0 0 1px #75dce2;
+}
+
+.room-floorplan.security .object-one::before {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    left: 2px;
+    top: 2px;
+    background: #75dce2;
+    box-shadow:
+        10px 0 #75dce2,
+        20px 0 #75dce2;
+}
+
+.room-floorplan.security .object-two {
+    width: 17px;
+    height: 5px;
+    right: 5px;
+    bottom: 5px;
+    background: #51416f;
+    border-color: #9873d4;
+    box-shadow: 0 3px 0 #30263e;
+}
+
+/* =========================================
+   R03 - CORREDOR NORTE
+   Passagem comprida e iluminação
+========================================= */
+
+.room-floorplan.corridor {
+    background-color: #101923;
+    background-image:
+        linear-gradient(90deg, transparent 45%, #3c5360 46%, #3c5360 49%, transparent 50%),
+        repeating-linear-gradient(90deg, #172531 0px, #172531 7px, #202d3a 7px, #202d3a 9px);
+}
+
+.room-floorplan.corridor::before {
+    left: 0;
+    top: 50%;
+    width: 100%;
+    height: 2px;
+    background: #526e7c;
+}
+
+.room-floorplan.corridor .object-one,
+.room-floorplan.corridor .object-two {
+    width: 4px;
+    height: 5px;
+    background: #75dce2;
+    border: none;
+    box-shadow: 0 0 5px #75dce2;
+}
+
+.room-floorplan.corridor .object-one {
+    left: 12px;
+    top: 4px;
+}
+
+.room-floorplan.corridor .object-two {
+    right: 12px;
+    bottom: 4px;
+}
+
+/* =========================================
+   R04 - ARQUIVO
+   Estantes e documentos
+========================================= */
+
+.room-floorplan.archive {
+    background-color: #191522;
+}
+
+.room-floorplan.archive .object-one,
+.room-floorplan.archive .object-two {
+    width: 9px;
+    height: 21px;
+    top: 3px;
+    background: repeating-linear-gradient(
+        to bottom,
+        #9873d4 0px,
+        #9873d4 3px,
+        #44345f 3px,
+        #44345f 5px,
+        #c3a7ed 5px,
+        #c3a7ed 6px
+    );
+    border: 1px solid #8d70b8;
+    box-shadow: inset 0 0 3px #171020;
+}
+
+.room-floorplan.archive .object-one {
+    left: 7px;
+}
+
+.room-floorplan.archive .object-two {
+    right: 7px;
+}
+
+.room-floorplan.archive .object-one::before,
+.room-floorplan.archive .object-two::before {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    right: 1px;
+    top: 4px;
+    background: #75dce2;
+    box-shadow: 0 7px #d6a96c;
+}
+
+/* =========================================
+   R05 - DEPÓSITO
+   Caixas e materiais armazenados
+========================================= */
+
+.room-floorplan.storage {
+    background-color: #1c1717;
+}
+
+.room-floorplan.storage .object-one {
+    width: 11px;
+    height: 10px;
+    left: 7px;
+    top: 4px;
+    background: #9a7656;
+    border: 1px solid #d0a879;
+    box-shadow:
+        inset 0 0 0 2px #76563e,
+        13px 9px 0 -1px #76563e,
+        13px 9px 0 0 #d0a879;
+}
+
+.room-floorplan.storage .object-one::before {
+    content: "";
+    position: absolute;
+    width: 2px;
+    height: 8px;
+    left: 4px;
+    top: 0;
+    background: #d0a879;
+}
+
+.room-floorplan.storage .object-two {
+    width: 10px;
+    height: 9px;
+    right: 5px;
+    bottom: 5px;
+    background: #76563e;
+    border: 1px solid #d0a879;
+    box-shadow: inset 0 0 0 2px #9a7656;
+}
+
+.room-floorplan.storage .object-two::before {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    left: 2px;
+    top: 2px;
+    background: #d0a879;
+}
+
+/* =========================================
+   R06 - LABORATÓRIO
+   Bancadas e equipamentos científicos
+========================================= */
+
+.room-floorplan.laboratory {
+    background-color: #10202a;
+}
+
+.room-floorplan.laboratory .object-one {
+    width: 23px;
+    height: 6px;
+    left: 5px;
+    top: 5px;
+    background: #398b9a;
+    border: 1px solid #b4f5f1;
+    box-shadow:
+        0 9px 0 -1px #398b9a,
+        0 9px 0 0 #75dce2;
+}
+
+.room-floorplan.laboratory .object-one::before {
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 7px;
+    left: 5px;
+    top: -8px;
+    background: #9873d4;
+    box-shadow:
+        8px 0 #9873d4,
+        16px 0 #75dce2;
+}
+
+.room-floorplan.laboratory .object-two {
+    width: 6px;
+    height: 12px;
+    right: 7px;
+    bottom: 5px;
+    background: #9873d4;
+    border: 1px solid #c9a9ed;
+    border-radius: 2px 2px 1px 1px;
+}
+
+.room-floorplan.laboratory .object-two::before {
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 3px;
+    left: 0;
+    top: 3px;
+    background: #75dce2;
+}
+
+/* =========================================
+   R07 - ENERGIA
+   Gerador e painel elétrico
+========================================= */
+
+.room-floorplan.power {
+    background-color: #211521;
+}
+
+.room-floorplan.power .object-one {
+    width: 19px;
+    height: 17px;
+    left: 5px;
+    top: 4px;
+    background: #57436f;
+    border: 2px solid #d65a91;
+    box-shadow:
+        inset 0 0 0 2px #30243d,
+        0 0 7px #d65a91;
+}
+
+.room-floorplan.power .object-one::before {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 9px;
+    left: 5px;
+    top: 2px;
+    background: #d65a91;
+    box-shadow: 0 0 5px #d65a91;
+}
+
+.room-floorplan.power .object-two {
+    width: 7px;
+    height: 17px;
+    right: 6px;
+    top: 4px;
+    background: #244b57;
+    border: 1px solid #75dce2;
+    box-shadow: inset 0 0 0 2px #172d3c;
+}
+
+.room-floorplan.power .object-two::before {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    left: 1px;
+    top: 3px;
+    background: #91d9c0;
+    box-shadow: 0 5px #d65a91;
+}
+
+/* =========================================
+   R08 - OFICINA
+   Bancada, ferramentas e maquinário
+========================================= */
+
+.room-floorplan.workshop {
+    background-color: #1c191b;
+    background-image:
+        linear-gradient(#302932 1px, transparent 1px),
+        linear-gradient(90deg, #302932 1px, transparent 1px);
+}
+
+.room-floorplan.workshop .object-one {
+    width: 25px;
+    height: 7px;
+    left: 4px;
+    top: 6px;
+    background: #9a7656;
+    border: 1px solid #d0a77b;
+    box-shadow:
+        0 3px 0 #594331,
+        inset 0 2px #c69b70;
+}
+
+.room-floorplan.workshop .object-one::before {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 9px;
+    right: -7px;
+    top: -2px;
+    background: #77717f;
+    border: 1px solid #aaa3b5;
+}
+
+.room-floorplan.workshop .object-two {
+    width: 10px;
+    height: 10px;
+    right: 5px;
+    bottom: 5px;
+    background: #77717f;
+    border: 1px solid #aaa3b5;
+    box-shadow:
+        0 0 0 2px #423b4b,
+        inset 0 0 0 2px #50495c;
+}
+
+.room-floorplan.workshop .object-two::before {
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    left: 2px;
+    top: 2px;
+    background: #d65a91;
+}
+
+/* =========================================
+   R09 - ALA MÉDICA
+   Maca, equipamentos e monitor
+========================================= */
+
+.room-floorplan.medical {
+    background-color: #182329;
+}
+
+.room-floorplan.medical .object-one {
+    width: 22px;
+    height: 9px;
+    left: 5px;
+    top: 9px;
+    background: #d7d5e4;
+    border: 2px solid #75dce2;
+    box-shadow:
+        0 3px 0 #536b76,
+        inset 0 0 0 2px #9b9aaa;
+}
+
+.room-floorplan.medical .object-one::before {
+    content: "";
+    position: absolute;
+    width: 5px;
+    height: 4px;
+    left: 2px;
+    top: 0;
+    background: #75dce2;
+}
+
+.room-floorplan.medical .object-two {
+    width: 7px;
+    height: 8px;
+    right: 7px;
+    top: 5px;
+    background: #244b57;
+    border: 1px solid #75dce2;
+    box-shadow: inset 0 0 0 2px #172d3c;
+}
+
+.room-floorplan.medical .object-two::before {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    left: 1px;
+    top: 1px;
+    background: #91d9c0;
+}
+
+/* =========================================
+   R10 - CONTROLE CENTRAL
+   Consoles e estação de comando
+========================================= */
+
+.room-floorplan.control {
+    background-color: #111b2b;
+}
+
+.room-floorplan.control .object-one {
+    width: 21px;
+    height: 7px;
+    left: 5px;
+    top: 5px;
+    background: #354b64;
+    border: 1px solid #75dce2;
+    box-shadow:
+        0 9px 0 -1px #354b64,
+        0 9px 0 0 #75dce2;
+}
+
+.room-floorplan.control .object-one::before {
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 3px;
+    left: 3px;
+    top: 1px;
+    background: #75dce2;
+    box-shadow:
+        7px 0 #9873d4,
+        14px 0 #75dce2;
+}
+
+.room-floorplan.control .object-two {
+    width: 7px;
+    height: 11px;
+    right: 6px;
+    top: 7px;
+    background: #57436f;
+    border: 1px solid #d65a91;
+    box-shadow: 0 0 5px #d65a9155;
+}
+
+.room-floorplan.control .object-two::before {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    left: 1px;
+    top: 2px;
+    background: #d65a91;
+}
+
+/* =========================================
+   R11 - CÂMARA DE CONTENÇÃO
+   Estrutura circular de contenção
+========================================= */
+
+.room-floorplan.containment {
+    background-color: #1d101e;
+    border-color: #d65a91;
+    box-shadow:
+        inset 0 0 8px #d65a9144,
+        0 0 7px #d65a9155;
+}
+
+.room-floorplan.containment::before {
+    left: 50%;
+    top: 50%;
+    width: 22px;
+    height: 22px;
+    transform: translate(-50%, -50%);
+    border: 2px solid #d65a91;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle, #d65a9144 0 20%, transparent 22%);
+    box-shadow:
+        inset 0 0 5px #d65a91,
+        0 0 5px #d65a91;
+}
+
+.room-floorplan.containment .object-one {
+    display: none;
+}
+
+.room-floorplan.containment .object-two {
+    width: 5px;
+    height: 5px;
+    right: 5px;
+    top: 5px;
+    background: #d65a91;
+    border: none;
+    box-shadow:
+        0 0 4px #d65a91,
+        -39px 12px 0 #75dce2;
+}
+
+/* =========================================
+   R12 - SAÍDA DE EMERGÊNCIA
+   Porta reforçada e sinalização
+========================================= */
+
+.room-floorplan.exit {
+    background-color: #12231f;
+    border-color: #91d9c0;
+    box-shadow:
+        inset 0 0 6px #91d9c033,
+        0 0 7px #91d9c055;
+}
+
+.room-floorplan.exit .object-one {
+    width: 19px;
+    height: 18px;
+    left: 6px;
+    top: 4px;
+    background: #24483f;
+    border: 2px solid #91d9c0;
+    box-shadow:
+        inset 0 0 0 2px #162e29,
+        0 0 4px #91d9c055;
+}
+
+.room-floorplan.exit .object-one::before {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    right: 2px;
+    top: 6px;
+    background: #91d9c0;
+}
+
+.room-floorplan.exit .object-two {
+    width: 5px;
+    height: 5px;
+    right: 8px;
+    top: 7px;
+    background: #91d9c0;
+    border: none;
+    box-shadow: 0 0 6px #91d9c0;
+}
+
+.room-floorplan.exit .object-two::before {
+    content: "";
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    left: 1px;
+    top: 1px;
+    background: #e1fff0;
+}
+
+/* =========================================
+   ESTADOS DAS SALAS
+========================================= */
+
+/* Sala explorada */
+.room-node.visited .room-floorplan {
+    border-color: #75dce2;
+    box-shadow:
+        inset 0 0 0 2px #292438,
+        0 0 7px #75dce255;
+}
+
+/* Sala atual */
+.room-node.current .room-floorplan {
+    border-color: #c3f75b;
+    box-shadow:
+        inset 0 0 0 2px #292438,
+        0 0 9px #c3f75b88;
+}
+
+/* Sala sem energia */
+.room-node.without-power .room-floorplan {
+    filter: brightness(.55) saturate(.7);
+}
+
+/* Sala bloqueada */
+.room-node.locked .room-floorplan {
+    border-color: #d65a91;
+    filter: brightness(.65);
+}
+
+/* =========================================
+   CORREÇÃO — VISIBILIDADE DAS SALAS
+========================================= */
+
+.room-map {
+    position: relative;
+    isolation: isolate;
+}
+
+.connections {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.room-node {
+    position: absolute;
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    width: 94px;
+    min-width: 94px;
+    min-height: 48px;
+    padding: 5px;
+
+    background: transparent;
+    border: none;
+    clip-path: none;
+    filter: none;
+    box-shadow: none;
+
+    opacity: 1;
+    visibility: visible;
+    cursor: pointer;
+}
+
+/* Desativa os enfeites do antigo modelo de card */
+.room-node::before,
+.room-node::after {
+    content: none;
+    display: none;
+}
+
+/* Garante que a planta apareça */
+.room-floorplan {
+    position: relative;
+    z-index: 1;
+
+    display: block;
+    flex-shrink: 0;
+
+    width: 68px;
+    height: 30px;
+
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Identificação das salas */
+.room-id,
+.room-name {
+    position: relative;
+    z-index: 2;
+    display: block;
+    visibility: visible;
+    opacity: 1;
+}
+
+.room-id {
+    color: #91e5e8;
+}
+
+.room-name {
+    color: #eee6f5;
+    text-align: center;
+}
+
+/* Estados */
+.room-node.visited .room-id {
+    color: #91d9c0;
+}
+
+.room-node:hover {
+    background: transparent;
+}
+
+
+
+/* =========================================
+   ESCAPE PROTOCOL — REFINAMENTO DAS SALAS
+   Pixel Art 32-bit / Instalação Orion
+========================================= */
+
+/* Módulo completo */
+.room-node {
+    position: absolute;
+    z-index: 2;
+
+    width: 94px;
+    min-width: 94px;
+    min-height: 58px;
+    padding: 4px 2px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 4px;
+
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    clip-path: none;
+    box-shadow: none;
+    filter: none;
+
+    opacity: 1;
+    visibility: visible;
+    cursor: pointer;
+
+    transition: transform .15s ease;
+}
+
+.room-node::before,
+.room-node::after {
+    content: none;
+    display: none;
+}
+
+/* Planta baixa */
+.room-floorplan {
+    position: relative;
+    z-index: 1;
+
+    display: block;
+    flex-shrink: 0;
+
+    width: 78px;
+    height: 38px;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    border: 2px solid #77718d;
+    border-radius: 0;
+
+    background-color: #11101c;
+    background-image:
+        linear-gradient(#292438 1px, transparent 1px),
+        linear-gradient(90deg, #292438 1px, transparent 1px);
+
+    background-size: 6px 6px;
+
+    box-shadow:
+        inset 0 0 0 2px #292438,
+        inset 0 0 8px #080711,
+        0 2px 0 #080711,
+        0 0 5px #75dce222;
+
+    image-rendering: pixelated;
+    transition:
+        border-color .15s ease,
+        box-shadow .15s ease,
+        filter .15s ease;
+}
+
+/* Divisórias internas */
+.room-floorplan::before {
+    z-index: 1;
+    opacity: .65;
+}
+
+/* Porta */
+.room-door {
+    bottom: 0;
+    width: 10px;
+    height: 3px;
+
+    background: #75dce2;
+    box-shadow:
+        0 0 4px #75dce2,
+        0 -2px 0 #398b9a;
+}
+
+/* Equipamentos */
+.room-object {
+    image-rendering: pixelated;
+    border-radius: 0;
+}
+
+/* Identificação */
+.room-id {
+    display: block;
+    width: 100%;
+
+    color: #91e5e8;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px;
+    line-height: 10px;
+    letter-spacing: 1px;
+    text-align: center;
+    text-shadow: 0 0 5px #75dce255;
+}
+
+.room-name {
+    display: block;
+    width: 100%;
+
+    color: #c9bfd9;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    line-height: 11px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    text-shadow: 1px 1px #080711;
+}
+
+
+.room-node:hover {
+    transform: translate(-50%, -50%);
+    background: transparent;
+}
+
+.room-node:hover .room-floorplan {
+    border-color: #c3a7ed;
+    filter: brightness(1.15);
+}
+
+.room-node:hover .room-name {
+    color: #ffffff;
+}
+
+
+/* Visitada */
+.room-node.visited .room-floorplan {
+    border-color: #75dce2;
+    box-shadow:
+        inset 0 0 0 2px #292438,
+        inset 0 0 8px #75dce222,
+        0 2px 0 #080711,
+        0 0 7px #75dce244;
+}
+
+.room-node.visited .room-id {
+    color: #91d9c0;
+}
+
+/* Sala atual */
+.room-node.current .room-floorplan {
+    border-color: #c3f75b;
+    box-shadow:
+        inset 0 0 0 2px #292438,
+        0 0 10px #c3f75b88;
+}
+
+/* Sem energia */
+.room-node.without-power .room-floorplan {
+    filter: brightness(.48) saturate(.65);
+}
+
+/* Bloqueada */
+.room-node.locked .room-floorplan {
+    border-color: #d65a91;
+    filter: brightness(.65) saturate(.8);
+}
+
+.room-node.locked .room-id {
+    color: #d65a91;
+}
+
+/* Mapa e corredores */
+.room-map {
+    position: relative;
+    isolation: isolate;
+}
+
+.connections {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+
+
+
+/* =========================================
+   ESCAPE PROTOCOL — PLANTAS DAS SALAS
+   Paredes definidas / Pixel Art
+========================================= */
+
+
+.room-node {
+    position: absolute;
+    z-index: 2;
+
+    width: 112px;
+    min-width: 112px;
+    min-height: 78px;
+    padding: 6px;
+    gap: 4px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background: #21172f;
+    border: 2px solid #9873d4;
+    border-radius: 9px;
+
+    box-shadow:
+        0 0 0 2px #080711,
+        0 0 12px #9873d455,
+        inset 0 0 12px #9873d422;
+
+    transition: background .2s, border-color .2s, box-shadow .2s;
+}
+
+/* Salas visitadas */
+.room-node.visited {
+    background: #173039;
+    border-color: #75dce2;
+
+    box-shadow:
+        0 0 0 2px #080711,
+        0 0 14px #75dce255,
+        inset 0 0 12px #75dce222;
+}
+
+/* Efeito ao passar o mouse */
+.room-node:hover {
+    transform: translate(-50%, -50%);
+    border-color: #d0b5ff;
+
+    box-shadow:
+        0 0 0 2px #080711,
+        0 0 17px #9873d488,
+        inset 0 0 14px #9873d433;
+}
+
+/* Estrutura externa de cada sala */
+.room-floorplan {
+    width: 94px;
+    height: 48px;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    border: 2px solid #a99bb9;
+    outline: 1px solid #080711;
+
+    background-size: 7px 7px;
+
+    box-shadow:
+        inset 0 0 0 2px #292438,
+        inset 0 0 10px #080711,
+        0 2px 0 #080711,
+        0 0 7px #75dce233;
+}
+
+/* Porta de entrada */
+.room-door {
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    bottom: -1px;
+    transform: translateX(-50%);
+
+    width: 12px;
+    height: 4px;
+
+    background: #75dce2;
+    border: 1px solid #d5ffff;
+    box-shadow: 0 0 4px #75dce2;
+}
+
+/* Identificação */
+.room-id {
+    font-size: 10px;
+    line-height: 12px;
+}
+
+.room-name {
+    font-size: 11px;
+    line-height: 12px;
+}
+
+/* Hover sem deslocar a sala */
+.room-node:hover {
+    transform: translate(-50%, -50%);
+    background: transparent;
+}
+
+.room-node:hover .room-floorplan {
+    filter: brightness(1.15);
+    border-color: #e0c8ff;
+}
