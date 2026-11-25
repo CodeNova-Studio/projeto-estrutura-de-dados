@@ -17,13 +17,13 @@ class AlexCharacter {
         // Coluna 0: parada; colunas 1–4: caminhada; coluna 5: corrida.
         this.animations = {
             idle: [0],
-            walk: [1, 2, 3, 4],
+            walk: [1, 2, 3, 4, 3, 2],
             run: [5]
         };
 
         this.frameDelays = {
             idle: 500,
-            walk: 125,
+            walk: 160,
             run: 85
         };
 
