@@ -1,35 +1,11 @@
-
-/* =========================================
-   ALEX CHARACTER CONTROLLER
-   Escape Protocol
-========================================= */
-
 class AlexCharacter {
-
     constructor(elementId) {
-
         this.element = document.getElementById(elementId);
+        this.statusElement = document.getElementById("alex-animation-status");
 
-        this.statusElement = document.getElementById(
-            "alex-animation-status"
-        );
-
-        this.frameWidth = 64;
-        this.frameHeight = 96;
-
-        this.displayScale = 2;
-
-        this.direction = "front";
-        this.state = "idle";
-
-        this.frame = 0;
-        this.lastFrameTime = 0;
-
-        this.animationSpeed = {
-            idle: 350,
-            walk: 120,
-            interaction: 250
-        };
+        this.sheetPath = "assets/characters/alex/alex-sheet.png";
+        this.frameWidth = 256;
+        this.frameHeight = 256;
 
         this.directionRows = {
             front: 0,
@@ -38,212 +14,133 @@ class AlexCharacter {
             back: 3
         };
 
-        this.frameCounts = {
-            idle: 4,
-            walk: 6,
-            interaction: 4
+        // Coluna 0: parada; colunas 1–4: caminhada; coluna 5: corrida.
+        this.animations = {
+            idle: [0],
+            walk: [1, 2, 3, 4],
+            run: [5]
         };
 
-        this.sheets = {
-            idle: "assets/characters/alex/idle.png",
-            walk: "assets/characters/alex/walk.png",
-            interaction: "assets/characters/alex/interaction.png"
+        this.frameDelays = {
+            idle: 500,
+            walk: 125,
+            run: 85
         };
 
-        this.loadedSheets = {};
-        this.currentSheet = null;
-
+        this.direction = "front";
+        this.state = "idle";
+        this.sequenceIndex = 0;
+        this.lastFrameTime = 0;
+        this.image = new Image();
         this.isReady = false;
         this.isPlaying = false;
 
-        if (!this.element) {
-            return;
-        }
+        if (!this.element) return;
 
-        this.loadSheets();
-    }
-
-    async loadSheets() {
-
-        const entries = Object.entries(this.sheets);
-
-        const results = await Promise.all(
-            entries.map(([name, path]) => {
-
-                return new Promise(resolve => {
-
-                    const image = new Image();
-
-                    image.onload = () => {
-                        resolve({
-                            name,
-                            image,
-                            success: true
-                        });
-                    };
-
-                    image.onerror = () => {
-                        resolve({
-                            name,
-                            image: null,
-                            success: false
-                        });
-                    };
-
-                    image.src = path;
-                });
-            })
-        );
-
-        results.forEach(result => {
-
-            if (result.success) {
-                this.loadedSheets[result.name] = result.image;
+        this.image.onload = () => {
+            if (
+                this.image.naturalWidth !== 1536 ||
+                this.image.naturalHeight !== 1024
+            ) {
+                this.setStatus("DIMENSÕES DA SPRITESHEET INVÁLIDAS");
+                return;
             }
 
-        });
+            this.isReady = true;
+            this.element.dataset.spriteReady = "true";
 
-        if (!this.loadedSheets.idle) {
+            const placeholder = this.element.querySelector(
+                ".alex-sprite-placeholder"
+            );
 
-            this.setStatus("SPRITES NÃO CARREGADOS");
+            if (placeholder) placeholder.hidden = true;
+
+            this.render();
+            this.setStatus("ESTADO: PARADA");
+            this.start();
+        };
+
+        this.image.onerror = () => {
+            this.setStatus("ERRO AO CARREGAR SPRITESHEET");
             this.element.dataset.spriteReady = "false";
+        };
 
-            return;
-        }
-
-        this.isReady = true;
-
-        this.element.dataset.spriteReady = "true";
-
-        this.setState("idle");
-        this.setStatus("ESTADO: PARADA");
-
-        this.start();
+        this.image.src = this.sheetPath;
     }
 
     setDirection(direction) {
-
-        if (!(direction in this.directionRows)) {
-            return;
-        }
+        if (!(direction in this.directionRows)) return;
 
         this.direction = direction;
-
-        this.frame = 0;
-
+        this.sequenceIndex = 0;
         this.render();
     }
 
     setState(state) {
-
-        if (!(state in this.frameCounts)) {
-            return;
-        }
-
-        if (state === "interaction" && !this.loadedSheets.interaction) {
-            this.setStatus("ANIMAÇÃO DE INTERAÇÃO INDISPONÍVEL");
-            return;
-        }
-
-        if (state === "walk" && !this.loadedSheets.walk) {
-            this.setStatus("ANIMAÇÃO DE CAMINHADA INDISPONÍVEL");
-            return;
-        }
+        if (!(state in this.animations)) return;
 
         this.state = state;
-        this.frame = 0;
+        this.sequenceIndex = 0;
         this.lastFrameTime = 0;
-
-        this.render();
 
         const labels = {
             idle: "ESTADO: PARADA",
             walk: "ESTADO: CAMINHANDO",
-            interaction: "ESTADO: INVESTIGANDO"
+            run: "ESTADO: CORRENDO"
         };
 
         this.setStatus(labels[state]);
+        this.render();
     }
 
     render() {
+        if (!this.isReady) return;
 
-        if (!this.isReady) {
-            return;
-        }
-
-        const image = this.loadedSheets[this.state];
-
-        if (!image) {
-            return;
-        }
-
-        const row = this.state === "interaction"
-            ? 0
-            : this.directionRows[this.direction];
-
-        const x = this.frame * this.frameWidth * this.displayScale;
-        const y = row * this.frameHeight * this.displayScale;
+        const frames = this.animations[this.state];
+        const column = frames[this.sequenceIndex];
+        const row = this.directionRows[this.direction];
 
         this.element.style.backgroundImage =
-            `url("${this.sheets[this.state]}")`;
+            `url("${this.sheetPath}")`;
+
+        this.element.style.backgroundRepeat = "no-repeat";
+        this.element.style.backgroundSize = "768px 512px";
 
         this.element.style.backgroundPosition =
-            `-${x}px -${y}px`;
-
-        this.element.style.backgroundSize =
-            `${image.width * this.displayScale}px ` +
-            `${image.height * this.displayScale}px`;
+            `-${column * 128}px -${row * 128}px`;
     }
 
     animate(timestamp) {
-
-        if (!this.isPlaying || !this.isReady) {
-            return;
-        }
+        if (!this.isPlaying || !this.isReady) return;
 
         if (!this.lastFrameTime) {
             this.lastFrameTime = timestamp;
         }
 
-        const elapsed = timestamp - this.lastFrameTime;
+        if (
+            timestamp - this.lastFrameTime >=
+            this.frameDelays[this.state]
+        ) {
+            const frames = this.animations[this.state];
 
-        if (elapsed >= this.animationSpeed[this.state]) {
+            if (frames.length > 1) {
+                this.sequenceIndex =
+                    (this.sequenceIndex + 1) % frames.length;
 
-            this.frame++;
-
-            if (this.state === "interaction") {
-
-                if (this.frame >= this.frameCounts.interaction) {
-                    this.frame = 0;
-                    this.setState("idle");
-                }
-
-            } else {
-
-                this.frame %= this.frameCounts[this.state];
+                this.render();
             }
 
             this.lastFrameTime = timestamp;
-
-            this.render();
         }
 
-        requestAnimationFrame(
-            this.animate.bind(this)
-        );
+        requestAnimationFrame(this.animate.bind(this));
     }
 
     start() {
-
-        if (this.isPlaying || !this.isReady) {
-            return;
-        }
+        if (this.isPlaying || !this.isReady) return;
 
         this.isPlaying = true;
-
-        requestAnimationFrame(
-            this.animate.bind(this)
-        );
+        requestAnimationFrame(this.animate.bind(this));
     }
 
     stop() {
@@ -251,28 +148,18 @@ class AlexCharacter {
     }
 
     investigate() {
-
-        if (!this.isReady || !this.loadedSheets.interaction) {
-            return;
-        }
-
-        this.setState("interaction");
+        this.setStatus("ESTADO: INVESTIGANDO");
     }
 
     setStatus(message) {
-
         if (this.statusElement) {
             this.statusElement.textContent = message;
         }
     }
 }
 
-/* Inicialização */
-
 let alex = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-
     alex = new AlexCharacter("alex-sprite");
-
 });

@@ -1,0 +1,46 @@
+.alex-stage {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    background:
+        radial-gradient(ellipse at 50% 65%, #9873d422, transparent 68%),
+        #100d19;
+
+    border: 1px solid #9873d455;
+    box-shadow: inset 0 0 18px #080711;
+}
+
+.alex-sprite {
+    display: block;
+    flex: 0 0 128px;
+    width: 128px;
+    height: 128px;
+
+    background-repeat: no-repeat;
+    background-position: 0 0;
+    background-size: 768px 512px;
+
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+.alex-sprite-placeholder {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+
+    color: #d65a91;
+    font-family: "Share Tech Mono", monospace;
+    font-size: 10px;
+    line-height: 1.7;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+.alex-sprite-placeholder[hidden] {
+    display: none;
+}
