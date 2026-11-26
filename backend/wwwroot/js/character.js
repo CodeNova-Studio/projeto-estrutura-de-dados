@@ -4,16 +4,21 @@ class AlexCharacter {
         this.element = document.getElementById(elementId);
         this.statusElement = document.getElementById("alex-animation-status");
 
+        // Caminhos das spritesheets.
         this.sheetPath = "assets/characters/alex/alex-sheet.png";
 
         this.walkLeftPath =
-            "assets/characters/alex/alex-walk-spritesheet-left.png";
+            "assets/characters/alex/alex-walk-spritesheet-left-fixed.png";
 
         this.walkRightPath =
-            "assets/characters/alex/alex-walk-spritesheet-right.png";
+            "assets/characters/alex/alex-walk-spritesheet-right-fixed.png";
 
+        // Dimensões dos quadros.
         this.frameWidth = 256;
         this.frameHeight = 256;
+        this.displaySize = 136;
+
+        this.sideTotalFrames = 8;
 
         this.directionRows = {
             front: 0,
@@ -29,10 +34,11 @@ class AlexCharacter {
         };
 
         this.walkSideFrames = [0, 1, 2, 3, 4, 5, 6, 7];
+        this.walkLeftFrames = [7, 6, 5, 4, 3, 2, 1, 0];
 
         this.frameDelays = {
             idle: 500,
-            walk: 130,
+            walk: 160,
             run: 85
         };
 
@@ -54,20 +60,27 @@ class AlexCharacter {
             this.loadImage(this.walkRightPath)
         ])
         .then(([base, left, right]) => {
+
+            // Valida a spritesheet principal.
             if (
                 base.naturalWidth !== 1536 ||
                 base.naturalHeight !== 1024
             ) {
-                throw new Error("Dimensões da spritesheet original inválidas");
+                throw new Error(
+                    "Dimensões da spritesheet original inválidas"
+                );
             }
 
+            // Valida as novas spritesheets laterais.
             if (
-                left.naturalWidth !== 2172 ||
-                left.naturalHeight !== 724 ||
-                right.naturalWidth !== 2172 ||
-                right.naturalHeight !== 724
+                left.naturalWidth !== 2048 ||
+                left.naturalHeight !== 256 ||
+                right.naturalWidth !== 2048 ||
+                right.naturalHeight !== 256
             ) {
-                throw new Error("Dimensões das spritesheets de caminhada inválidas");
+                throw new Error(
+                    "Dimensões das spritesheets laterais inválidas"
+                );
             }
 
             this.images = {
@@ -104,6 +117,7 @@ class AlexCharacter {
             const image = new Image();
 
             image.onload = () => resolve(image);
+
             image.onerror = () => reject(
                 new Error(`Não foi possível carregar: ${path}`)
             );
@@ -142,12 +156,13 @@ class AlexCharacter {
     }
 
     getCurrentFrames() {
-        if (
-            this.state === "walk" &&
-            (this.direction === "left" || this.direction === "right")
-        ) {
-            return this.walkSideFrames;
-        }
+        if (this.state === "walk" && this.direction === "left") {
+    return this.walkLeftFrames;
+}
+
+if (this.state === "walk" && this.direction === "right") {
+    return this.walkSideFrames;
+}
 
         return this.animations[this.state];
     }
@@ -160,21 +175,22 @@ class AlexCharacter {
             (this.direction === "left" || this.direction === "right");
 
         if (isSideWalking) {
+
             const image = this.direction === "left"
                 ? this.images.left
                 : this.images.right;
 
-            const scale = 136 / 472.1;
-            const frameWidth = (2172 / 8) * scale;
-            const backgroundWidth = 2172 * scale;
-            const backgroundHeight = 724 * scale;
-            const verticalOffset = 129.4 * scale;
+            const frames = this.getCurrentFrames();
+            const column = frames[this.sequenceIndex];
 
-            const column = this.walkSideFrames[this.sequenceIndex];
+            // Cada quadro lateral possui 256 × 256 pixels.
+            const scale = this.displaySize / this.frameWidth;
 
-            const horizontalOffset =
-                ((136 - frameWidth) / 2) -
-                (column * frameWidth);
+            const frameDisplayed = this.frameWidth * scale;
+            const backgroundWidth = image.naturalWidth * scale;
+            const backgroundHeight = image.naturalHeight * scale;
+
+            const horizontalOffset = -(column * frameDisplayed);
 
             this.element.style.backgroundImage =
                 `url("${image.src}")`;
@@ -183,20 +199,30 @@ class AlexCharacter {
                 `${backgroundWidth}px ${backgroundHeight}px`;
 
             this.element.style.backgroundPosition =
-                `${horizontalOffset}px -${verticalOffset}px`;
+                `${horizontalOffset}px 0px`;
 
         } else {
+
             const frames = this.animations[this.state];
             const column = frames[this.sequenceIndex];
             const row = this.directionRows[this.direction];
 
+            const scale = this.displaySize / this.frameWidth;
+
+            const backgroundWidth =
+                this.images.base.naturalWidth * scale;
+
+            const backgroundHeight =
+                this.images.base.naturalHeight * scale;
+
             this.element.style.backgroundImage =
                 `url("${this.sheetPath}")`;
 
-            this.element.style.backgroundSize = "816px 544px";
+            this.element.style.backgroundSize =
+                `${backgroundWidth}px ${backgroundHeight}px`;
 
             this.element.style.backgroundPosition =
-                `-${column * 136}px -${row * 136}px`;
+                `${-(column * this.displaySize)}px ${-(row * this.displaySize)}px`;
         }
 
         this.element.style.backgroundRepeat = "no-repeat";
