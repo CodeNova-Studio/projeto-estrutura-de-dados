@@ -1,9 +1,17 @@
+
 class AlexCharacter {
     constructor(elementId) {
         this.element = document.getElementById(elementId);
         this.statusElement = document.getElementById("alex-animation-status");
 
         this.sheetPath = "assets/characters/alex/alex-sheet.png";
+
+        this.walkLeftPath =
+            "assets/characters/alex/alex-walk-spritesheet-left.png";
+
+        this.walkRightPath =
+            "assets/characters/alex/alex-walk-spritesheet-right.png";
+
         this.frameWidth = 256;
         this.frameHeight = 256;
 
@@ -14,37 +22,59 @@ class AlexCharacter {
             back: 3
         };
 
-        // Coluna 0: parada; colunas 1–4: caminhada; coluna 5: corrida.
         this.animations = {
             idle: [0],
             walk: [1, 2, 3, 4, 3, 2],
             run: [5]
         };
 
+        this.walkSideFrames = [0, 1, 2, 3, 4, 5, 6, 7];
+
         this.frameDelays = {
             idle: 500,
-            walk: 160,
+            walk: 130,
             run: 85
         };
 
         this.direction = "front";
         this.state = "idle";
+
         this.sequenceIndex = 0;
         this.lastFrameTime = 0;
-        this.image = new Image();
+
+        this.images = {};
         this.isReady = false;
         this.isPlaying = false;
 
         if (!this.element) return;
 
-        this.image.onload = () => {
+        Promise.all([
+            this.loadImage(this.sheetPath),
+            this.loadImage(this.walkLeftPath),
+            this.loadImage(this.walkRightPath)
+        ])
+        .then(([base, left, right]) => {
             if (
-                this.image.naturalWidth !== 1536 ||
-                this.image.naturalHeight !== 1024
+                base.naturalWidth !== 1536 ||
+                base.naturalHeight !== 1024
             ) {
-                this.setStatus("DIMENSÕES DA SPRITESHEET INVÁLIDAS");
-                return;
+                throw new Error("Dimensões da spritesheet original inválidas");
             }
+
+            if (
+                left.naturalWidth !== 2172 ||
+                left.naturalHeight !== 724 ||
+                right.naturalWidth !== 2172 ||
+                right.naturalHeight !== 724
+            ) {
+                throw new Error("Dimensões das spritesheets de caminhada inválidas");
+            }
+
+            this.images = {
+                base,
+                left,
+                right
+            };
 
             this.isReady = true;
             this.element.dataset.spriteReady = "true";
@@ -53,19 +83,33 @@ class AlexCharacter {
                 ".alex-sprite-placeholder"
             );
 
-            if (placeholder) placeholder.hidden = true;
+            if (placeholder) {
+                placeholder.hidden = true;
+            }
 
             this.render();
             this.setStatus("ESTADO: PARADA");
             this.start();
-        };
+        })
+        .catch(error => {
+            console.error("Erro ao carregar sprites da Alex:", error);
 
-        this.image.onerror = () => {
             this.setStatus("ERRO AO CARREGAR SPRITESHEET");
             this.element.dataset.spriteReady = "false";
-        };
+        });
+    }
 
-        this.image.src = this.sheetPath;
+    loadImage(path) {
+        return new Promise((resolve, reject) => {
+            const image = new Image();
+
+            image.onload = () => resolve(image);
+            image.onerror = () => reject(
+                new Error(`Não foi possível carregar: ${path}`)
+            );
+
+            image.src = path;
+        });
     }
 
     setDirection(direction) {
@@ -75,6 +119,7 @@ class AlexCharacter {
         this.direction = direction;
         this.sequenceIndex = 0;
         this.lastFrameTime = 0;
+
         this.render();
     }
 
@@ -96,21 +141,65 @@ class AlexCharacter {
         this.render();
     }
 
+    getCurrentFrames() {
+        if (
+            this.state === "walk" &&
+            (this.direction === "left" || this.direction === "right")
+        ) {
+            return this.walkSideFrames;
+        }
+
+        return this.animations[this.state];
+    }
+
     render() {
         if (!this.isReady) return;
 
-        const frames = this.animations[this.state];
-        const column = frames[this.sequenceIndex];
-        const row = this.directionRows[this.direction];
+        const isSideWalking =
+            this.state === "walk" &&
+            (this.direction === "left" || this.direction === "right");
 
-        this.element.style.backgroundImage =
-            `url("${this.sheetPath}")`;
+        if (isSideWalking) {
+            const image = this.direction === "left"
+                ? this.images.left
+                : this.images.right;
+
+            const scale = 136 / 472.1;
+            const frameWidth = (2172 / 8) * scale;
+            const backgroundWidth = 2172 * scale;
+            const backgroundHeight = 724 * scale;
+            const verticalOffset = 129.4 * scale;
+
+            const column = this.walkSideFrames[this.sequenceIndex];
+
+            const horizontalOffset =
+                ((136 - frameWidth) / 2) -
+                (column * frameWidth);
+
+            this.element.style.backgroundImage =
+                `url("${image.src}")`;
+
+            this.element.style.backgroundSize =
+                `${backgroundWidth}px ${backgroundHeight}px`;
+
+            this.element.style.backgroundPosition =
+                `${horizontalOffset}px -${verticalOffset}px`;
+
+        } else {
+            const frames = this.animations[this.state];
+            const column = frames[this.sequenceIndex];
+            const row = this.directionRows[this.direction];
+
+            this.element.style.backgroundImage =
+                `url("${this.sheetPath}")`;
+
+            this.element.style.backgroundSize = "816px 544px";
+
+            this.element.style.backgroundPosition =
+                `-${column * 136}px -${row * 136}px`;
+        }
 
         this.element.style.backgroundRepeat = "no-repeat";
-        this.element.style.backgroundSize = "816px 544px";
-
-        this.element.style.backgroundPosition =
-            `-${column * 136}px -${row * 136}px`;
     }
 
     animate(timestamp) {
@@ -124,7 +213,7 @@ class AlexCharacter {
             timestamp - this.lastFrameTime >=
             this.frameDelays[this.state]
         ) {
-            const frames = this.animations[this.state];
+            const frames = this.getCurrentFrames();
 
             if (frames.length > 1) {
                 this.sequenceIndex =
@@ -143,6 +232,7 @@ class AlexCharacter {
         if (this.isPlaying || !this.isReady) return;
 
         this.isPlaying = true;
+
         requestAnimationFrame(this.animate.bind(this));
     }
 
