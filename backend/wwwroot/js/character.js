@@ -29,7 +29,7 @@ class AlexCharacter {
 
         this.animations = {
             idle: [0],
-            walk: [1, 2, 3, 4, 3, 2],
+            walk: [1, 2, 3, 4, 3, 2, 1, 2],
             run: [5]
         };
 
@@ -38,7 +38,7 @@ class AlexCharacter {
 
         this.frameDelays = {
             idle: 500,
-            walk: 160,
+            walk: 200,
             run: 85
         };
 
@@ -228,6 +228,8 @@ if (this.state === "walk" && this.direction === "right") {
         this.element.style.backgroundRepeat = "no-repeat";
     }
 
+    
+
     animate(timestamp) {
         if (!this.isPlaying || !this.isReady) return;
 
@@ -235,24 +237,42 @@ if (this.state === "walk" && this.direction === "right") {
             this.lastFrameTime = timestamp;
         }
 
-        if (
-            timestamp - this.lastFrameTime >=
-            this.frameDelays[this.state]
-        ) {
-            const frames = this.getCurrentFrames();
+        const frames = this.getCurrentFrames();
 
+        const delay = this.state === "walk"
+            ? (this.direction === "front" || this.direction === "back"
+                ? 400
+                : 200)
+            : this.frameDelays[this.state];
+
+        let frameChanged = false;
+
+        while (timestamp - this.lastFrameTime >= delay) {
             if (frames.length > 1) {
                 this.sequenceIndex =
                     (this.sequenceIndex + 1) % frames.length;
 
-                this.render();
+                frameChanged = true;
             }
 
-            this.lastFrameTime = timestamp;
+            this.lastFrameTime += delay;
+        }
+
+        if (frameChanged) {
+            this.render();
         }
 
         requestAnimationFrame(this.animate.bind(this));
     }
+
+    start() {
+        if (this.isPlaying || !this.isReady) return;
+
+        this.isPlaying = true;
+
+        requestAnimationFrame(this.animate.bind(this));
+    }
+
 
     start() {
         if (this.isPlaying || !this.isReady) return;
