@@ -610,10 +610,10 @@ async function explore() {
 
             // Marca a sala como visitada.
             if (event.type === "VisitRoom") {
-                visitedRooms.add(event.roomId);
+    visitedRooms.add(event.roomId);
 
-                renderMap();
-            }
+    renderMap();
+}
 
             // Atualiza a pilha de recursão.
             renderStack(

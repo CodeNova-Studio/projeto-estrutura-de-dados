@@ -38,8 +38,96 @@ document.addEventListener("DOMContentLoaded", () => {
     const player = document.getElementById("exploration-player");
     const closeButton = document.getElementById("close-exploration");
 
-    world.style.backgroundImage =
-        "url('assets/rooms/reception.png')";
+   
+const roomCameras = {
+    R01: {
+        name: "RECEPÇÃO",
+        image: "assets/rooms/reception.png"
+    },
+    R02: {
+        name: "SEGURANÇA",
+        image: "assets/rooms/security-room.jpg"
+    },
+    R03: {
+        name: "CORREDOR NORTE",
+        image: "assets/rooms/corridor.jpg"
+    },
+    R04: {
+        name: "ARQUIVO",
+        image: "assets/rooms/archive.jpg"
+    },
+    R05: {
+        name: "DEPÓSITO",
+        image: "assets/rooms/storage-room.jpg"
+    },
+    R06: {
+        name: "LABORATÓRIO",
+        image: "assets/rooms/laboratory.jpg"
+    },
+    R07: {
+        name: "ENERGIA",
+        image: "assets/rooms/power-station.jpg"
+    },
+    R08: {
+        name: "OFICINA",
+        image: "assets/rooms/workshop.jpg"
+    },
+    R09: {
+        name: "ALA MÉDICA",
+        image: "assets/rooms/medical-ward.jpg"
+    },
+    R10: {
+        name: "CONTROLE CENTRAL",
+        image: "assets/rooms/command-room.jpg"
+    },
+    R11: {
+        name: "CÂMARA DE CONTENÇÃO",
+        image: "assets/rooms/containment-chamber.jpg"
+    },
+    R12: {
+        name: "SAÍDA",
+        image: "assets/rooms/exit-chamber.jpg"
+    }
+};
+
+function updateSurveillance(roomId) {
+    const camera = roomCameras[roomId];
+
+    if (!camera) return;
+
+    const image = document.getElementById("surveillance-image");
+    const name = document.getElementById("camera-name");
+    const sector = document.getElementById("camera-sector");
+    const signal = document.getElementById("camera-signal");
+    const warning = document.getElementById("camera-warning");
+
+    if (image) {
+        image.src = camera.image;
+        image.alt = `Monitoramento: ${camera.name}`;
+    }
+
+    if (name) {
+        name.textContent = `CAM ${roomId.slice(1)} // ${camera.name}`;
+    }
+
+    if (sector) {
+        sector.textContent = roomId;
+    }
+
+    if (signal) {
+        signal.textContent = "ESTÁVEL";
+    }
+
+    if (warning) {
+        warning.textContent = "SISTEMA DE VIGILÂNCIA ATIVO";
+    }
+}
+
+updateSurveillance("R01");
+
+world.style.backgroundImage =
+    "url('assets/rooms/reception.png')";
+
 
     const character = new AlexCharacter("exploration-alex");
 
@@ -188,19 +276,26 @@ document.addEventListener("DOMContentLoaded", () => {
         animationFrame = requestAnimationFrame(movePlayer);
     }
 
-    map.addEventListener("click", event => {
-        const room = event.target.closest(".room-node");
-        if (!room) return;
+    
+map.addEventListener("click", event => {
+    const room = event.target.closest(".room-node");
+    if (!room) return;
 
-        if (room.dataset.roomId === "R01") {
-            openRoom();
-        } else {
-            addLog(
-                `O cenário de ${room.dataset.roomId} ainda não está disponível.`,
-                "EXPLORAÇÃO"
-            );
-        }
-    });
+    const roomId = room.dataset.roomId;
+
+    // Atualiza a câmera da sala selecionada.
+    updateSurveillance(roomId);
+
+    if (roomId === "R01") {
+        openRoom();
+    } else {
+        addLog(
+            `Câmera direcionada para ${roomId}. O cenário de exploração ainda não está disponível.`,
+            "VIGILÂNCIA"
+        );
+    }
+});
+
 
     closeButton.addEventListener("click", closeRoom);
 

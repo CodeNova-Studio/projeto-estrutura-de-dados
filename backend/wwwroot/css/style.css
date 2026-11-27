@@ -1367,8 +1367,9 @@ footer > div {
 
 @media (max-width: 1250px) {
     .dashboard {
-        grid-template-columns: 260px minmax(350px, 1fr);
-    }
+    grid-template-columns: 220px minmax(0, 1fr) 280px;
+    gap: 10px;
+}
 
     .map-panel {
         grid-column: 2;
@@ -1376,9 +1377,9 @@ footer > div {
     }
 
     .right-column {
-        grid-column: 1 / -1;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+    grid-column: auto;
+    grid-template-columns: 1fr;
+}
 
     .character-panel {
         grid-column: 1 / -1;
@@ -1519,7 +1520,7 @@ body {
 /* Três colunas principais */
 .dashboard {
     display: grid;
-    grid-template-columns: 260px minmax(420px, 1fr) 320px;
+    grid-template-columns: 250px minmax(420px, 1fr) 350px;
     gap: 12px;
     align-items: start;
 }
@@ -1748,8 +1749,9 @@ footer {
 /* Telas menores que desktop */
 @media (max-width: 1250px) {
     .dashboard {
-        grid-template-columns: 240px minmax(350px, 1fr);
-    }
+    grid-template-columns: 220px minmax(0, 1fr) 280px;
+    gap: 10px;
+}
 
     .map-panel {
         grid-column: 2;
@@ -1757,9 +1759,9 @@ footer {
     }
 
     .right-column {
-        grid-column: 1 / -1;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+    grid-column: auto;
+    grid-template-columns: 1fr;
+}
 
     .character-panel {
         grid-column: 1 / -1;
@@ -1897,7 +1899,7 @@ footer {
 
     .room-map,
     .map-placeholder {
-        min-height: 275px;
+        min-height: 430px;
     }
 
     .map-frame {
@@ -1922,47 +1924,6 @@ footer {
         padding: 9px 13px;
     }
 }
-
-
-/* =====================================
-   EQUILÍBRIO VERTICAL DAS COLUNAS
-===================================== */
-
-@media (min-width: 1251px) {
-    .dashboard {
-        align-items: stretch;
-    }
-
-    .left-column {
-        align-content: stretch;
-    }
-
-    .objectives-panel {
-        height: 100%;
-    }
-
-    .map-panel {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .map-frame {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .room-map {
-        flex: 1;
-        min-height: 310px;
-    }
-
-    .map-placeholder {
-        height: 100%;
-    }
-}
-
 
 /* =========================================
    ESCAPE PROTOCOL — PIXEL ART DIRECTION
@@ -3825,4 +3786,137 @@ footer {
 .room-node:hover .room-floorplan {
     filter: brightness(1.15);
     border-color: #e0c8ff;
+}
+
+
+/* =====================================
+   MONITOR DE VIGILÂNCIA
+===================================== */
+
+
+/* =====================================
+   MONITOR DE VIGILÂNCIA
+===================================== */
+
+.surveillance-panel {
+    min-width: 0;
+    overflow: hidden;
+}
+
+.surveillance-screen {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 125px;
+    min-height: 125px;
+    max-height: 125px;
+    aspect-ratio: auto;
+    margin-top: 12px;
+    overflow: hidden;
+    background: #08070e;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.surveillance-screen img {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.camera-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 8px;
+    color: #d9faff;
+    font-family: var(--font-tech);
+    font-size: 9px;
+    text-shadow: 0 1px 4px #000;
+    pointer-events: none;
+}
+
+.camera-overlay i {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    margin-left: 3px;
+    border-radius: 50%;
+    background: var(--pink);
+    box-shadow: 0 0 7px var(--pink);
+}
+
+.camera-scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 3px,
+        #08071135 4px,
+        #08071135 5px
+    );
+    pointer-events: none;
+}
+
+.surveillance-data {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.surveillance-data > div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+    padding: 9px;
+    background: #100d19;
+    border: 1px solid var(--border);
+}
+
+.surveillance-data span {
+    color: var(--muted);
+    font-family: var(--font-tech);
+    font-size: 9px;
+}
+
+.surveillance-data strong {
+    color: var(--cyan);
+    font-family: var(--font-tech);
+    font-size: 10px;
+}
+
+.surveillance-warning {
+    margin-top: 9px;
+    padding: 9px;
+    background: #100d19;
+    border-left: 2px solid var(--cyan);
+    color: var(--cyan);
+    font-family: var(--font-tech);
+    font-size: 9px;
+    letter-spacing: .5px;
+}
+
+@media (min-width: 1251px) {
+    .map-frame {
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+
+    .map-legend {
+        margin-top: 7px;
+        margin-bottom: 7px;
+    }
+
+    .map-footer {
+        margin-top: 6px;
+    }
 }
