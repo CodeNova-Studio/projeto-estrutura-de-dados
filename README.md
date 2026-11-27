@@ -78,7 +78,7 @@ O Escape Protocol é desenvolvido pela equipe <strong>CodeNova Studio</strong>, 
 
 **Integrantes:**
 
-- Ana Maria Alves Ferreira
+- Anamaria Alves Ferreira
 - Isabelly Oliveira Macedo dos Santos
 - Letícia de Araújo
 
