@@ -3788,12 +3788,6 @@ footer {
     border-color: #e0c8ff;
 }
 
-
-/* =====================================
-   MONITOR DE VIGILÂNCIA
-===================================== */
-
-
 /* =====================================
    MONITOR DE VIGILÂNCIA
 ===================================== */
@@ -3918,5 +3912,284 @@ footer {
 
     .map-footer {
         margin-top: 6px;
+    }
+}
+
+
+
+
+/* =========================================
+   COLUNA DIREITA — VERSÃO COMPACTA
+========================================= */
+
+@media (min-width: 1251px) {
+
+    .right-column {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+        align-items: start;
+    }
+
+    .right-column > .panel {
+        grid-column: auto;
+        width: 100%;
+        min-width: 0;
+        padding: 9px;
+    }
+
+    /* Ficha da Alex */
+    .character-profile {
+        gap: 8px;
+        margin: 7px 0;
+    }
+
+    .character-panel .alex-stage {
+        width: 90px;
+        min-width: 90px;
+        height: 95px;
+    }
+
+    .character-panel .alex-sprite {
+        transform: scale(.65);
+    }
+
+    .character-data h3 {
+        font-size: 17px;
+    }
+
+    .character-message {
+        padding: 6px;
+    }
+
+    .character-message p {
+        font-size: 9px;
+        line-height: 1.3;
+    }
+
+    .alex-animation-status {
+        margin-top: 5px;
+        padding-top: 5px;
+    }
+
+    /* Registro */
+    .log-panel .panel-heading,
+    .stack-panel .panel-heading {
+        margin-bottom: 6px;
+    }
+
+    .log-panel .panel-heading h2,
+    .stack-panel .panel-heading h2 {
+        font-size: 15px;
+    }
+
+    .event-log {
+        height: 65px;
+        min-height: 65px;
+        padding: 6px;
+    }
+
+    .log-entry {
+        padding: 4px 0;
+    }
+
+    /* Monitoramento */
+    .surveillance-screen {
+        height: 75px;
+        min-height: 75px;
+        max-height: 75px;
+        margin-top: 7px;
+    }
+
+    .surveillance-data {
+        margin-top: 6px;
+    }
+
+    .surveillance-data > div {
+        padding: 6px;
+    }
+
+    .surveillance-warning {
+        margin-top: 6px;
+        padding: 6px;
+    }
+
+    /* Pilha de recursão */
+    .stack-panel {
+        min-height: unset;
+    }
+
+    .stack-description {
+        padding: 6px;
+        margin-bottom: 5px;
+    }
+
+    .recursion-stack {
+        min-height: 35px;
+        max-height: 65px;
+        padding: 4px;
+        gap: 4px;
+    }
+
+    .stack-empty {
+        padding: 8px 4px;
+    }
+
+    .stack-footer {
+        padding-top: 5px;
+    }
+}
+
+/* Em telas pequenas, ocultar a pilha */
+@media (max-width: 800px) {
+    .right-column .stack-panel {
+        display: none;
+    }
+}
+
+@media (min-width: 801px) {
+    #room-map {
+        height: 430px !important;
+        min-height: 430px !important;
+        box-sizing: border-box;
+    }
+}
+
+
+/* =========================================
+   ORGANIZAÇÃO FINAL DAS COLUNAS
+========================================= */
+
+@media (min-width: 1251px) {
+
+    .dashboard {
+        grid-template-columns: 250px minmax(0, 1fr) 320px;
+        gap: 12px;
+        align-items: start;
+    }
+
+    .left-column,
+    .right-column {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 10px;
+        min-width: 0;
+    }
+
+    .left-column > .panel,
+    .right-column > .panel {
+        width: 100%;
+        min-width: 0;
+    }
+
+    /* Pilha na coluna esquerda */
+    .left-column .stack-panel {
+        grid-column: auto;
+        min-height: unset;
+        padding: 12px;
+    }
+
+    .left-column .recursion-stack {
+        min-height: 40px;
+        max-height: 90px;
+    }
+
+    /* Coluna direita compacta */
+    .right-column > .panel {
+        padding: 12px;
+    }
+
+    .right-column .character-profile {
+        gap: 8px;
+        margin: 8px 0;
+    }
+
+    .right-column .character-panel .alex-stage {
+        height: 110px;
+    }
+
+    .right-column .surveillance-screen {
+        height: 95px;
+        min-height: 95px;
+        max-height: 95px;
+    }
+
+    .right-column .event-log {
+        height: 75px;
+        min-height: 75px;
+    }
+
+    /* Preservar o espaço das salas */
+    .room-map {
+        min-height: 310px;
+    }
+}
+
+/* Celulares: a pilha não é essencial */
+@media (max-width: 800px) {
+    .stack-panel {
+        display: none;
+    }
+}
+
+
+
+/* =========================================
+   DASHBOARD — ALTURA E MAPA AJUSTÁVEIS
+========================================= */
+
+@media (min-width: 1251px) {
+
+    .dashboard {
+        align-items: stretch;
+        min-height: 0;
+    }
+
+    .left-column,
+    .right-column {
+        align-content: start;
+        min-height: 0;
+    }
+
+    /* O painel central acompanha as colunas */
+    .map-panel {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-height: 0;
+        box-sizing: border-box;
+    }
+
+    /* A moldura ocupa o espaço restante */
+    .map-frame {
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* Área das salas */
+    #room-map,
+    .map-placeholder {
+        flex: 1 1 auto;
+        width: 100%;
+        height: auto;
+        min-height: 430px;
+        box-sizing: border-box;
+    }
+
+    /* Evita que os elementos do mapa sejam comprimidos */
+    .map-toolbar,
+    .map-legend,
+    .map-footer,
+    .map-panel > .primary-button {
+        flex-shrink: 0;
+    }
+}
+
+/* Telas menores continuam com rolagem normal */
+@media (max-width: 1250px) {
+    .dashboard {
+        align-items: start;
     }
 }
