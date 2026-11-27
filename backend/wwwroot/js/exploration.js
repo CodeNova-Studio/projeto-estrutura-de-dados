@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const character = new AlexCharacter("exploration-alex");
 
-    // A movimentação local não altera o status do perfil da Alex.
+    // A movimentação local não altera o perfil da Alex.
     character.statusElement = null;
 
     const keys = new Set();
@@ -142,38 +142,136 @@ document.addEventListener("DOMContentLoaded", () => {
     let y = 0;
     let lastTime = 0;
     let animationFrame = null;
+    let sceneLoadId = 0;
 
     const speed = 210;
     const margin = 38;
 
-    // Os obstáculos serão configurados individualmente por cenário.
-    const obstacles = [];
+    // Área física de colisão da Alex.
+// Menor que o tamanho visual do sprite.
+const playerHitbox = {
+    width: 24,
+    height: 18
+};
 
-    // Verifica se a Alex está tentando atravessar um obstáculo.
+    // Áreas de colisão de cada sala, em porcentagem da imagem.
+const roomObstacles = {
+    R01: [
+        // Móveis laterais
+        { left: 85.1, top: 30.7, right: 92.0, bottom: 45.0 },
+        { left: 7.5, top: 32.0, right: 14.7, bottom: 46.9 },
+        { left: 7.8, top: 51.6, right: 15.3, bottom: 66.1 },
+        { left: 7.8, top: 70.1, right: 12.6, bottom: 81.7 },
+        { left: 7.9, top: 13.0, right: 12.6, bottom: 26.3 },
+        { left: 13.7, top: 13.0, right: 16.5, bottom: 23.3 },
+        { left: 48.5, top: 5.8, right: 52.5, bottom: 32.4 },
+
+        // Mesinha
+        { left: 16.6, top: 42.7, right: 21.0, bottom: 56.2 },
+
+        // Mesa principal
+        { left: 65.2, top: 61.5, right: 92.2, bottom: 79.6 }
+    ]
+};
+
+const obstacles = [];
+
+    // Verifica colisões.
     function checkCollision(nextX, nextY) {
-        const playerWidth = player.offsetWidth;
-        const playerHeight = player.offsetHeight;
+    const playerBox = {
+        left: nextX - playerHitbox.width / 2,
+        right: nextX + playerHitbox.width / 2,
+        top: nextY - playerHitbox.height / 2,
+        bottom: nextY + playerHitbox.height / 2
+    };
 
-        const playerBox = {
-            left: nextX - playerWidth / 2,
-            right: nextX + playerWidth / 2,
-            top: nextY - playerHeight / 2,
-            bottom: nextY + playerHeight / 2
-        };
-
-        return obstacles.some(obstacle => {
-            return (
-                playerBox.left < obstacle.right &&
-                playerBox.right > obstacle.left &&
-                playerBox.top < obstacle.bottom &&
-                playerBox.bottom > obstacle.top
-            );
-        });
-    }
-
+    return obstacles.some(obstacle => {
+        return (
+            playerBox.left < obstacle.right &&
+            playerBox.right > obstacle.left &&
+            playerBox.top < obstacle.bottom &&
+            playerBox.bottom > obstacle.top
+        );
+    });
+}
     function drawPlayer() {
         player.style.left = `${x}px`;
         player.style.top = `${y}px`;
+    }
+
+    // Ajusta cada cenário respeitando sua proporção original.
+  function fitSceneToImage(imageUrl, roomId) {
+        const currentLoadId = ++sceneLoadId;
+
+        return new Promise((resolve, reject) => {
+            const sceneImage = new Image();
+
+            sceneImage.onload = () => {
+                // Ignora carregamentos antigos ou sala já fechada.
+                if (currentLoadId !== sceneLoadId || !open) {
+                    resolve(false);
+                    return;
+                }
+
+                const maxWidth = Math.max(
+                    1,
+                    Math.min(screen.clientWidth - 36, 1100)
+                );
+
+                const maxHeight = Math.max(
+                    1,
+                    window.innerHeight * 0.65
+                );
+
+                const imageWidth = sceneImage.naturalWidth;
+                const imageHeight = sceneImage.naturalHeight;
+
+                // Usa a proporção original sem esticar a imagem.
+                const scale = Math.min(
+                    maxWidth / imageWidth,
+                    maxHeight / imageHeight,
+                    1
+                );
+
+                const width = Math.round(imageWidth * scale);
+                const height = Math.round(imageHeight * scale);
+
+                // Limpa e carrega as colisões da sala atual.
+obstacles.length = 0;
+
+const roomAreas = roomObstacles[roomId] || [];
+
+roomAreas.forEach(area => {
+    obstacles.push({
+        left: width * area.left / 100,
+        right: width * area.right / 100,
+        top: height * area.top / 100,
+        bottom: height * area.bottom / 100
+    });
+});
+
+                world.style.width = `${width}px`;
+                world.style.height = `${height}px`;
+                world.style.aspectRatio = `${imageWidth} / ${imageHeight}`;
+                world.style.boxSizing = "border-box";
+
+                // Posiciona Alex no centro inferior do cenário.
+                x = width / 2;
+                y = height * 0.72;
+
+                drawPlayer();
+
+                resolve(true);
+            };
+
+            sceneImage.onerror = () => {
+                reject(
+                    new Error(`Não foi possível carregar: ${imageUrl}`)
+                );
+            };
+
+            sceneImage.src = imageUrl;
+        });
     }
 
     // Abre qualquer uma das 12 salas.
@@ -181,7 +279,13 @@ document.addEventListener("DOMContentLoaded", () => {
         const room = roomCameras[roomId];
         if (!room) return;
 
-        // Atualiza cenário, título e identificação.
+        if (animationFrame) {
+            cancelAnimationFrame(animationFrame);
+            animationFrame = null;
+        }
+
+        keys.clear();
+
         world.style.backgroundImage = `url("${room.image}")`;
 
         roomTitle.textContent = `${roomId} — ${room.name}`;
@@ -191,28 +295,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
         screen.hidden = false;
         open = true;
-
-        const bounds = world.getBoundingClientRect();
-
-        x = bounds.width / 2;
-        y = bounds.height * 0.72;
-
-        drawPlayer();
-
-        character.setDirection("front");
-        character.setState("idle");
-
         lastTime = 0;
 
-        if (animationFrame) {
-            cancelAnimationFrame(animationFrame);
-        }
+        // Só inicia a movimentação depois de ajustar o cenário.
+        fitSceneToImage(room.image, roomId)
+            .then(success => {
+                if (!success || !open) return;
 
-        animationFrame = requestAnimationFrame(movePlayer);
+                character.setDirection("front");
+                character.setState("idle");
+
+                lastTime = 0;
+                animationFrame = requestAnimationFrame(movePlayer);
+            })
+            .catch(error => {
+                console.error(error);
+            });
     }
 
     function closeRoom() {
         open = false;
+        sceneLoadId++;
         keys.clear();
 
         if (animationFrame) {
@@ -255,8 +358,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const bounds = world.getBoundingClientRect();
 
-            const halfWidth = player.offsetWidth / 2;
-            const halfHeight = player.offsetHeight / 2;
+           const halfWidth = playerHitbox.width / 2;
+const halfHeight = playerHitbox.height / 2;
 
             const limitX = Math.max(margin, halfWidth);
             const limitY = Math.max(margin, halfHeight);

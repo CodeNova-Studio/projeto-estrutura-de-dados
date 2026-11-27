@@ -77,7 +77,7 @@
 }
 
 .exploration-player .alex-sprite {
-    transform: scale(.80);
+    transform: scale(.60);
     transform-origin: center;
 }
 
