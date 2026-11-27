@@ -29,8 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
 
         <footer class="exploration-controls">
-            <span>W A S D / SETAS — MOVIMENTAR</span>
             <span>ESC — VOLTAR AO MAPA</span>
+            <span>VISUALIZAÇÃO DO AMBIENTE</span>
             <span id="exploration-position">R01 // RECEPÇÃO</span>
         </footer>
     `;
@@ -42,6 +42,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const closeButton = document.getElementById("close-exploration");
     const roomTitle = document.getElementById("exploration-room-title");
     const positionLabel = document.getElementById("exploration-position");
+
+    // false = versão de entrega sem movimentação.
+// true = reativa a movimentação da Alex futuramente.
+const ENABLE_ALEX_MOVEMENT = false;
+
+player.hidden = !ENABLE_ALEX_MOVEMENT;
 
     // Cenários das 12 salas.
     const roomCameras = {
@@ -299,15 +305,17 @@ roomAreas.forEach(area => {
 
         // Só inicia a movimentação depois de ajustar o cenário.
         fitSceneToImage(room.image, roomId)
-            .then(success => {
-                if (!success || !open) return;
+           .then(success => {
+    if (!success || !open) return;
 
-                character.setDirection("front");
-                character.setState("idle");
+    if (ENABLE_ALEX_MOVEMENT) {
+        character.setDirection("front");
+        character.setState("idle");
 
-                lastTime = 0;
-                animationFrame = requestAnimationFrame(movePlayer);
-            })
+        lastTime = 0;
+        animationFrame = requestAnimationFrame(movePlayer);
+    }
+})
             .catch(error => {
                 console.error(error);
             });
@@ -412,30 +420,35 @@ const halfHeight = playerHitbox.height / 2;
 
     // Controles do teclado.
     document.addEventListener("keydown", event => {
-        if (!open) return;
+    if (!open) return;
 
-        const key = event.key.length === 1
-            ? event.key.toLowerCase()
-            : event.key;
+    // ESC continua funcionando mesmo sem movimentação.
+    if (event.key === "Escape") {
+        closeRoom();
+        return;
+    }
 
-        if ([
-            "ArrowUp",
-            "ArrowDown",
-            "ArrowLeft",
-            "ArrowRight",
-            "w",
-            "a",
-            "s",
-            "d"
-        ].includes(key)) {
-            event.preventDefault();
-            keys.add(key);
-        }
+    // Impede os controles de movimentação na versão de entrega.
+    if (!ENABLE_ALEX_MOVEMENT) return;
 
-        if (event.key === "Escape") {
-            closeRoom();
-        }
-    });
+    const key = event.key.length === 1
+        ? event.key.toLowerCase()
+        : event.key;
+
+    if ([
+        "ArrowUp",
+        "ArrowDown",
+        "ArrowLeft",
+        "ArrowRight",
+        "w",
+        "a",
+        "s",
+        "d"
+    ].includes(key)) {
+        event.preventDefault();
+        keys.add(key);
+    }
+});
 
     document.addEventListener("keyup", event => {
         const key = event.key.length === 1
