@@ -86,5 +86,6 @@ O Escape Protocol é desenvolvido pela equipe <strong>CodeNova Studio</strong>, 
 
 **ESCAPE PROTOCOL**
 
+Link do projeto: https://projeto-estrutura-de-dados-4j2h.onrender.com
 Projeto acadêmico — Algoritmos e Estrutura de Dados III  
 2026.
