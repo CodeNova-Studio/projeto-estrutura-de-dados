@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
     const map = document.getElementById("room-map");
     if (!map) return;
@@ -41,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
         "url('assets/rooms/reception.png')";
 
     const character = new AlexCharacter("exploration-alex");
+
     // A movimentação não altera o status exibido no perfil da Alex.
     character.statusElement = null;
 
@@ -55,6 +57,32 @@ document.addEventListener("DOMContentLoaded", () => {
     const speed = 210;
     const margin = 38;
 
+    // Obstáculos físicos da recepção.
+    // As coordenadas serão definidas com base na imagem do cenário.
+    const obstacles = [];
+
+    // Verifica se a Alex está tentando atravessar um obstáculo.
+    function checkCollision(nextX, nextY) {
+        const playerWidth = player.offsetWidth;
+        const playerHeight = player.offsetHeight;
+
+        const playerBox = {
+            left: nextX - playerWidth / 2,
+            right: nextX + playerWidth / 2,
+            top: nextY - playerHeight / 2,
+            bottom: nextY + playerHeight / 2
+        };
+
+        return obstacles.some(obstacle => {
+            return (
+                playerBox.left < obstacle.right &&
+                playerBox.right > obstacle.left &&
+                playerBox.top < obstacle.bottom &&
+                playerBox.bottom > obstacle.top
+            );
+        });
+    }
+
     function drawPlayer() {
         player.style.left = `${x}px`;
         player.style.top = `${y}px`;
@@ -65,10 +93,12 @@ document.addEventListener("DOMContentLoaded", () => {
         open = true;
 
         const bounds = world.getBoundingClientRect();
+
         x = bounds.width / 2;
         y = bounds.height * 0.72;
 
         drawPlayer();
+
         character.setDirection("front");
         character.setState("idle");
 
@@ -109,16 +139,39 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (moving) {
             const length = Math.hypot(dx, dy);
+
             dx /= length;
             dy /= length;
 
-            x += dx * speed * delta;
-            y += dy * speed * delta;
+            const nextX = x + dx * speed * delta;
+            const nextY = y + dy * speed * delta;
 
             const bounds = world.getBoundingClientRect();
 
-            x = Math.max(margin, Math.min(bounds.width - margin, x));
-            y = Math.max(margin, Math.min(bounds.height - margin, y));
+            const halfWidth = player.offsetWidth / 2;
+            const halfHeight = player.offsetHeight / 2;
+
+            const limitX = Math.max(margin, halfWidth);
+            const limitY = Math.max(margin, halfHeight);
+
+            const boundedX = Math.max(
+                limitX,
+                Math.min(bounds.width - limitX, nextX)
+            );
+
+            const boundedY = Math.max(
+                limitY,
+                Math.min(bounds.height - limitY, nextY)
+            );
+
+            // Verifica a colisão horizontal e vertical separadamente.
+            if (!checkCollision(boundedX, y)) {
+                x = boundedX;
+            }
+
+            if (!checkCollision(x, boundedY)) {
+                y = boundedY;
+            }
 
             if (Math.abs(dx) > Math.abs(dy)) {
                 character.setDirection(dx < 0 ? "left" : "right");
@@ -158,8 +211,16 @@ document.addEventListener("DOMContentLoaded", () => {
             ? event.key.toLowerCase()
             : event.key;
 
-        if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight",
-             "w", "a", "s", "d"].includes(key)) {
+        if ([
+            "ArrowUp",
+            "ArrowDown",
+            "ArrowLeft",
+            "ArrowRight",
+            "w",
+            "a",
+            "s",
+            "d"
+        ].includes(key)) {
             event.preventDefault();
             keys.add(key);
         }
