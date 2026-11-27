@@ -11,8 +11,9 @@ document.addEventListener("DOMContentLoaded", () => {
         <header class="exploration-header">
             <div>
                 <span>ORION FACILITY // EXPLORAÇÃO LOCAL</span>
-                <h2>R01 — RECEPÇÃO</h2>
+                <h2 id="exploration-room-title">R01 — RECEPÇÃO</h2>
             </div>
+
             <button type="button" id="close-exploration">
                 VOLTAR AO MAPA ×
             </button>
@@ -20,8 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <div class="exploration-world" id="exploration-world">
             <div class="exploration-player" id="exploration-player">
-                <div id="exploration-alex" class="alex-sprite"
-                     role="img" aria-label="Alex"></div>
+                <div id="exploration-alex"
+                     class="alex-sprite"
+                     role="img"
+                     aria-label="Alex"></div>
             </div>
         </div>
 
@@ -37,101 +40,99 @@ document.addEventListener("DOMContentLoaded", () => {
     const world = document.getElementById("exploration-world");
     const player = document.getElementById("exploration-player");
     const closeButton = document.getElementById("close-exploration");
+    const roomTitle = document.getElementById("exploration-room-title");
+    const positionLabel = document.getElementById("exploration-position");
 
-   
-const roomCameras = {
-    R01: {
-        name: "RECEPÇÃO",
-        image: "assets/rooms/reception.png"
-    },
-    R02: {
-        name: "SEGURANÇA",
-        image: "assets/rooms/security-room.jpg"
-    },
-    R03: {
-        name: "CORREDOR NORTE",
-        image: "assets/rooms/corridor.jpg"
-    },
-    R04: {
-        name: "ARQUIVO",
-        image: "assets/rooms/archive.jpg"
-    },
-    R05: {
-        name: "DEPÓSITO",
-        image: "assets/rooms/storage-room.jpg"
-    },
-    R06: {
-        name: "LABORATÓRIO",
-        image: "assets/rooms/laboratory.jpg"
-    },
-    R07: {
-        name: "ENERGIA",
-        image: "assets/rooms/power-station.jpg"
-    },
-    R08: {
-        name: "OFICINA",
-        image: "assets/rooms/workshop.jpg"
-    },
-    R09: {
-        name: "ALA MÉDICA",
-        image: "assets/rooms/medical-ward.jpg"
-    },
-    R10: {
-        name: "CONTROLE CENTRAL",
-        image: "assets/rooms/command-room.jpg"
-    },
-    R11: {
-        name: "CÂMARA DE CONTENÇÃO",
-        image: "assets/rooms/containment-chamber.jpg"
-    },
-    R12: {
-        name: "SAÍDA",
-        image: "assets/rooms/exit-chamber.jpg"
+    // Cenários das 12 salas.
+    const roomCameras = {
+        R01: {
+            name: "RECEPÇÃO",
+            image: "assets/rooms/reception.png"
+        },
+        R02: {
+            name: "SEGURANÇA",
+            image: "assets/rooms/security-room.jpg"
+        },
+        R03: {
+            name: "CORREDOR NORTE",
+            image: "assets/rooms/corridor.jpg"
+        },
+        R04: {
+            name: "ARQUIVO",
+            image: "assets/rooms/archive.jpg"
+        },
+        R05: {
+            name: "DEPÓSITO",
+            image: "assets/rooms/storage-room.jpg"
+        },
+        R06: {
+            name: "LABORATÓRIO",
+            image: "assets/rooms/laboratory.jpg"
+        },
+        R07: {
+            name: "ENERGIA",
+            image: "assets/rooms/power-station.jpg"
+        },
+        R08: {
+            name: "OFICINA",
+            image: "assets/rooms/workshop.jpg"
+        },
+        R09: {
+            name: "ALA MÉDICA",
+            image: "assets/rooms/medical-ward.jpg"
+        },
+        R10: {
+            name: "CONTROLE CENTRAL",
+            image: "assets/rooms/command-room.jpg"
+        },
+        R11: {
+            name: "CÂMARA DE CONTENÇÃO",
+            image: "assets/rooms/containment-chamber.jpg"
+        },
+        R12: {
+            name: "SAÍDA",
+            image: "assets/rooms/exit-chamber.jpg"
+        }
+    };
+
+    // Atualiza o monitor de vigilância.
+    function updateSurveillance(roomId) {
+        const camera = roomCameras[roomId];
+        if (!camera) return;
+
+        const image = document.getElementById("surveillance-image");
+        const name = document.getElementById("camera-name");
+        const sector = document.getElementById("camera-sector");
+        const signal = document.getElementById("camera-signal");
+        const warning = document.getElementById("camera-warning");
+
+        if (image) {
+            image.src = camera.image;
+            image.alt = `Monitoramento: ${camera.name}`;
+        }
+
+        if (name) {
+            name.textContent = `CAM ${roomId.slice(1)} // ${camera.name}`;
+        }
+
+        if (sector) {
+            sector.textContent = roomId;
+        }
+
+        if (signal) {
+            signal.textContent = "ESTÁVEL";
+        }
+
+        if (warning) {
+            warning.textContent = "SISTEMA DE VIGILÂNCIA ATIVO";
+        }
     }
-};
 
-function updateSurveillance(roomId) {
-    const camera = roomCameras[roomId];
-
-    if (!camera) return;
-
-    const image = document.getElementById("surveillance-image");
-    const name = document.getElementById("camera-name");
-    const sector = document.getElementById("camera-sector");
-    const signal = document.getElementById("camera-signal");
-    const warning = document.getElementById("camera-warning");
-
-    if (image) {
-        image.src = camera.image;
-        image.alt = `Monitoramento: ${camera.name}`;
-    }
-
-    if (name) {
-        name.textContent = `CAM ${roomId.slice(1)} // ${camera.name}`;
-    }
-
-    if (sector) {
-        sector.textContent = roomId;
-    }
-
-    if (signal) {
-        signal.textContent = "ESTÁVEL";
-    }
-
-    if (warning) {
-        warning.textContent = "SISTEMA DE VIGILÂNCIA ATIVO";
-    }
-}
-
-updateSurveillance("R01");
-
-world.style.backgroundImage =
-    "url('assets/rooms/reception.png')";
-
+    updateSurveillance("R01");
 
     const character = new AlexCharacter("exploration-alex");
 
-    // A movimentação não altera o status exibido no perfil da Alex.
+    // A movimentação local não altera o status do perfil da Alex.
     character.statusElement = null;
 
     const keys = new Set();
@@ -145,8 +146,7 @@ world.style.backgroundImage =
     const speed = 210;
     const margin = 38;
 
-    // Obstáculos físicos da recepção.
-    // As coordenadas serão definidas com base na imagem do cenário.
+    // Os obstáculos serão configurados individualmente por cenário.
     const obstacles = [];
 
     // Verifica se a Alex está tentando atravessar um obstáculo.
@@ -176,7 +176,19 @@ world.style.backgroundImage =
         player.style.top = `${y}px`;
     }
 
-    function openRoom() {
+    // Abre qualquer uma das 12 salas.
+    function openRoom(roomId) {
+        const room = roomCameras[roomId];
+        if (!room) return;
+
+        // Atualiza cenário, título e identificação.
+        world.style.backgroundImage = `url("${room.image}")`;
+
+        roomTitle.textContent = `${roomId} — ${room.name}`;
+        positionLabel.textContent = `${roomId} // ${room.name}`;
+
+        updateSurveillance(roomId);
+
         screen.hidden = false;
         open = true;
 
@@ -191,6 +203,11 @@ world.style.backgroundImage =
         character.setState("idle");
 
         lastTime = 0;
+
+        if (animationFrame) {
+            cancelAnimationFrame(animationFrame);
+        }
+
         animationFrame = requestAnimationFrame(movePlayer);
     }
 
@@ -200,12 +217,14 @@ world.style.backgroundImage =
 
         if (animationFrame) {
             cancelAnimationFrame(animationFrame);
+            animationFrame = null;
         }
 
         screen.hidden = true;
         character.setState("idle");
     }
 
+    // Movimentação da Alex.
     function movePlayer(timestamp) {
         if (!open) return;
 
@@ -252,7 +271,7 @@ world.style.backgroundImage =
                 Math.min(bounds.height - limitY, nextY)
             );
 
-            // Verifica a colisão horizontal e vertical separadamente.
+            // Colisão horizontal e vertical separadas.
             if (!checkCollision(boundedX, y)) {
                 x = boundedX;
             }
@@ -276,29 +295,19 @@ world.style.backgroundImage =
         animationFrame = requestAnimationFrame(movePlayer);
     }
 
-    
-map.addEventListener("click", event => {
-    const room = event.target.closest(".room-node");
-    if (!room) return;
+    // Clique em qualquer sala do mapa.
+    map.addEventListener("click", event => {
+        const room = event.target.closest(".room-node");
+        if (!room) return;
 
-    const roomId = room.dataset.roomId;
+        const roomId = room.dataset.roomId;
 
-    // Atualiza a câmera da sala selecionada.
-    updateSurveillance(roomId);
-
-    if (roomId === "R01") {
-        openRoom();
-    } else {
-        addLog(
-            `Câmera direcionada para ${roomId}. O cenário de exploração ainda não está disponível.`,
-            "VIGILÂNCIA"
-        );
-    }
-});
-
+        openRoom(roomId);
+    });
 
     closeButton.addEventListener("click", closeRoom);
 
+    // Controles do teclado.
     document.addEventListener("keydown", event => {
         if (!open) return;
 
